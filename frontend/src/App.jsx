@@ -1,4 +1,8 @@
 import React from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import $ from 'jquery';
+import Popper from 'popper.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 
 //Parent Component
@@ -35,6 +39,7 @@ class App extends React.Component {
 
 	render() {
 		 return (
+			
 			<div id="app-container">
 				<Navbar />
 				<Topbar companyName={this.state.companyName}/>
@@ -79,6 +84,12 @@ class Topbar extends React.Component {
 	render() {
 		return (
 			<div id="topbar">
+				<select name="Dropdown" id="">
+					<option value="">test</option>
+					<option value="">test</option>
+					<option value="">test</option>
+					<option value="">test</option>
+				</select>
 				<h1>{this.props.companyName}</h1>
 			</div>
 		)
@@ -146,7 +157,16 @@ class Articles extends React.Component {
 	}
 
 	render() {
-		const article = this.state.articles.map(item => <div><h3 className="article-title">{item.title}</h3><p className="article-content">{item.content}</p></div>)
+		const article = this.state.articles.map(item => 
+			<div>
+				<h3><a data-toggle="collapse" data-target={"#article-content-"+ item.title} aria-expanded="false" aria-controls={"article-content-" + item.title}>{item.title}</a></h3>
+				<div class="collapse" id={"article-content-" +item.title}>
+					<div class="card card-body">{item.content}</div>
+				</div>
+			</div>	
+		)
+
+		//const article = this.state.articles.map(item => <div><h3 className="article-title">{item.title}</h3><p className="article-content">{item.content}</p></div>)
 		return (
 			<div id="article-container">
 				<form onSubmit={(event) => {this.updateArticle(event); this.props.fetchCompany()}}>
