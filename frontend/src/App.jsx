@@ -10,7 +10,7 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			companyName: "Test Company",
+			companyName: "Lotus Gold",
 			address: "",
 			articles: [],
 			router: {
@@ -62,14 +62,38 @@ class Navbar extends React.Component {
 		return (
 			<nav id="navbar">
 				<ul>
-					<li><button href="#">Articles</button></li>
-					<li><button href="#">Apps</button></li>
-					<li><button href="#">Backup</button></li>
-					<li><button href="#">Email</button></li>
-					<li><button href="#">File Shares</button></li>
-					<li><button href="#">Networks</button></li>
-					<li><button href="#">Router</button></li>
-					<li><button href="#">Servers</button></li>
+					<li className="nav-button">
+						<span className="material-icons">book</span>
+						<h5>Articles</h5>
+					</li>
+					<li className="nav-button">
+						<span className="material-icons">apps</span>
+						<h5>Apps</h5>
+					</li>
+					<li className="nav-button">
+						<span className="material-icons">cloud_upload</span>
+						<h5>Backup</h5>
+					</li>
+					<li className="nav-button">
+						<span className="material-icons">mail</span>
+						<h5>Email</h5>
+					</li>
+					<li className="nav-button">
+						<span className="material-icons">folder</span>
+						<h5>File Shares</h5>
+					</li>
+					<li className="nav-button">
+						<span className="material-icons">wifi</span>
+						<h5>Networks</h5>
+					</li>
+					<li className="nav-button">
+						<span className="material-icons">router</span>
+						<h5>Router</h5>
+					</li>
+					<li className="nav-button">
+						<span className="material-icons">storage</span>
+						<h5>Servers</h5>
+					</li>
 				</ul>
 			</nav>
 
@@ -84,13 +108,20 @@ class Topbar extends React.Component {
 	render() {
 		return (
 			<div id="topbar">
+				<div id="logo">
+					<span className="material-icons">pets</span>
+					<h1>Auri</h1>
+				</div>
+				<input type="text" />
 				<select name="Dropdown" id="">
-					<option value="">test</option>
+					<option value="">{this.props.companyName}</option>
 					<option value="">test</option>
 					<option value="">test</option>
 					<option value="">test</option>
 				</select>
-				<h1>{this.props.companyName}</h1>
+				<span class="material-icons">
+account_circle
+</span>
 			</div>
 		)
 	}
@@ -157,16 +188,23 @@ class Articles extends React.Component {
 	}
 
 	render() {
-		const article = this.state.articles.map(item => 
+		
+
+		
+		const article = this.state.articles.map((item,index) => 
 			<div>
-				<h3><a data-toggle="collapse" data-target={"#article-content-"+ item.title} aria-expanded="false" aria-controls={"article-content-" + item.title}>{item.title}</a></h3>
-				<div class="collapse" id={"article-content-" +item.title}>
-					<div class="card card-body">{item.content}</div>
+				<h3 className="article-title">
+					<a data-toggle="collapse" data-target={"#article-content-"+ item.title.split(" ").join("-") + index.toString()} aria-expanded="false" aria-controls={"article-content-" + item.title + index.toString()}>
+						{item.title}<span class="material-icons">expand_more</span>
+					</a>
+				</h3>
+				<div class="collapse" id={"article-content-" +item.title.split(" ").join("-") + index.toString()}>
+					<p /*class="card card-body"*/>{item.content}</p>
 				</div>
 			</div>	
 		)
+		
 
-		//const article = this.state.articles.map(item => <div><h3 className="article-title">{item.title}</h3><p className="article-content">{item.content}</p></div>)
 		return (
 			<div id="article-container">
 				<form onSubmit={(event) => {this.updateArticle(event); this.props.fetchCompany()}}>

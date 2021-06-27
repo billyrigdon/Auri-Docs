@@ -178,7 +178,7 @@ const createArticle = (companyName, articleTitle, articleContent, done) => {
 //tests
 
 //updateRouter("g","192.168.0.0/24", "192.168.0.1", "ipsec", console.log);
-createCompany("Test Company");
+createCompany("Lotus Gold");
 //getCompany("Afghan Kush",(err, data) => console.log(data));
 //updateCompany("g", "address", "10.0.0.24/24",console.log);
 //createArticle("g","How to be a boss", "First thing's first, you just need to party",console.log);
@@ -205,5 +205,6 @@ app.get("/companies/:company", (req,res) => {
 //POST Requests
 app.post("/companies/articles/:company", (req, res) => {
 	createArticle(req.body.company,req.body.title,req.body.content,console.log);
+	res.send("Done");
 })
 

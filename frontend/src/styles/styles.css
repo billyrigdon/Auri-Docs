@@ -18,11 +18,20 @@
 
 body {
 	overflow:hidden;
-	background-color: #b5a7b6;
+	background-color: #bed4e750;
 }
 
 h1 {
 	font-size: 4rem;
+}
+
+h5 {
+	color:#dbd5b9;
+	font-size:2rem;
+}
+
+p {
+	font-size: 1.6rem;
 }
 
 #app-container {
@@ -39,48 +48,78 @@ h1 {
 	flex-direction: column;
 	position:relative;
 	left:0;
-	top:0;
+	top:10vh;
 	width:10vw;
-	height:100vh;
-	background-color:#4f4350;
+	height:90vh;
+	background-color:#202b2e;
+	box-shadow: 1px 0px 4px 6px rgba(0, 0, 0, 0.25);
 }
 #navbar ul {
-	margin-top:10vh;
 	padding:0 .5vw;
 }
 
+
 #navbar li {
 	list-style: none;
-	;
-
-}
-
-#navbar li button {
-	background-color: #00aea6;
-	color: black;
-	width:9vw;
-	height:5.6rem;
-	border-radius: 10px;
-	border-style: none;
-	color:white;
 	margin-top: .4rem;
-	font-size:1.3rem;
+	display:flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	color:#dbd5b9;
 }
+
+.nav-button span {
+	font-size:4rem;
+}
+
+
+/*Top Bar Styling*/
 
 #topbar {
 	position:absolute;
 	top:0;
-	left:10vw;
+	left:0;
 	height: 10vh;
-	width:90vw;
-	background-color: #4f4350;
+	width:100vw;
+	background-color: rgba(14, 26, 48, 0.75);
 	display:flex;
+	align-items: center;
+	justify-content: space-between;
+	box-shadow: 0px 1px 4px 6px rgba(0, 0, 0, 0.25);
+	z-index: 5;
+}
+
+#logo {
+	display:flex;
+	flex-direction: row;
 	align-items: center;
 	justify-content: center;
 }
 
+#topbar span {
+	color: #dbd5b9;
+	font-size: 5rem;
+}
+
+#topbar input {
+	border-radius:5px;
+	background-color: white;
+	border:none;
+	width:60vw;
+	height:2.5rem;
+}
+
+#topbar select {
+	background-color: white;
+	border-color: white;
+	border:none;
+	border-radius: 5px;
+	height: 2.5rem;
+}
+
 #topbar h1 {
-	color:#00aea6;
+	color:#dbd5b9;
 
 }
 
@@ -94,7 +133,7 @@ h1 {
 	top:10vh;
 	height:90vh;
 	width:90vw;
-	
+	background-color: #bed4e750;
 	display:flex;
 	flex-direction:column;
 }
@@ -102,7 +141,6 @@ h1 {
 #article-container {
 	display:flex;
 	flex-direction:row;
-
 }
 
 #article-container form {
@@ -130,7 +168,7 @@ h1 {
 	height:10vh;
 	margin:0 2rem 0 2rem;
 	font-size:1.5rem;
-	background-color: #9d00b5;
+	background-color: rgba(14, 26, 48, 0.75);
 	color:white;
 	border-radius: 10px;
 }
@@ -140,22 +178,28 @@ h1 {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	overflow-y:scroll;
+	width:50vw;
+	height:90vh;
 }
 
 #article-container ul {
-	width:50vw;
-	height:100vh;
 	text-align: center;
-	overflow-y:scroll;
+	height: 100%;
+}
+
+#article-container ul div {
+	margin-top:2rem;
 }
 
 .article-title {
 	font-size:3rem;
 	margin-top:2rem;
-	
+	color:#19212e;
 }
 
 .article-content {
 	font-size:1.5rem;
+	color:#19212e;
 }
 
