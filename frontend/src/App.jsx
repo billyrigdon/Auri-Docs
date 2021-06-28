@@ -20,6 +20,7 @@ class App extends React.Component {
 			}
 		};
 		this.fetchCompany = this.fetchCompany.bind(this);
+		this.updateCompany = this.updateCompany.bind(this);
 	};
 
 	fetchCompany() {
@@ -31,8 +32,14 @@ class App extends React.Component {
 			}))
 	};
 
+	updateCompany(comp) {
+		this.setState({
+			companyName: comp
+		});
+	}
 
-	componentDidMount() {
+
+	componentWillMount() {
 		this.fetchCompany();		
 	}
 
@@ -42,7 +49,7 @@ class App extends React.Component {
 			
 			<div id="app-container">
 				<Navbar />
-				<Topbar companyName={this.state.companyName}/>
+				<Topbar updateCompany={this.updateCompany} companyName={this.state.companyName}/>
 				<div id="content-container">			 		
 					<Articles setState={this.setState} fetchCompany={this.fetchCompany} companyName={this.state.companyName} articles={this.state.articles}/>
 				</div>
@@ -105,9 +112,17 @@ class Topbar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			companyList: []
+			companyList: [],
+			selectedCompany: this.props.companyName
 		};
 		this.fetchAllCompanies = this.fetchAllCompanies.bind(this);
+		this.updateSelectedCompany = this.updateSelectedCompany.bind(this);
+	}
+
+	updateSelectedCompany(newComp) {
+		this.setState({
+			selectedCompany: newComp
+		});
 	}
 
 	fetchAllCompanies() {
@@ -122,10 +137,15 @@ class Topbar extends React.Component {
 		this.fetchAllCompanies();
 	}
 
+	componentDidUpdate() {
+		this.props.updateCompany(this.state.selectedCompany)
+	}
+
+
 	render() {
 
 		const allCompanies = this.state.companyList.map((item) =>
-			<option value="">{item.name}</option>
+			<option value={item.name.toString()}>{item.name}</option>
 		)  
 		
 		return (
@@ -135,7 +155,7 @@ class Topbar extends React.Component {
 					<h1>Auri</h1>
 				</div>
 				<input type="text" />
-				<select name="Dropdown" id="">
+				<select name="Dropdown" id="Companies" onChange={this.updateSelectedCompany}>
 					<option value="">{this.props.companyName}</option>
 					{allCompanies}
 				</select>
