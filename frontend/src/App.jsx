@@ -104,8 +104,30 @@ class Navbar extends React.Component {
 class Topbar extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			companyList: []
+		};
+		this.fetchAllCompanies = this.fetchAllCompanies.bind(this);
 	}
+
+	fetchAllCompanies() {
+		fetch("http://127.0.0.1:1313/companies/")
+			.then(res => res.json())
+			.then(res => this.setState({
+				companyList: res
+			}))
+	};
+
+	componentDidMount() {
+		this.fetchAllCompanies();
+	}
+
 	render() {
+
+		const allCompanies = this.state.companyList.map((item) =>
+			<option value="">{item.name}</option>
+		)  
+		
 		return (
 			<div id="topbar">
 				<div id="logo">
@@ -115,9 +137,7 @@ class Topbar extends React.Component {
 				<input type="text" />
 				<select name="Dropdown" id="">
 					<option value="">{this.props.companyName}</option>
-					<option value="">test</option>
-					<option value="">test</option>
-					<option value="">test</option>
+					{allCompanies}
 				</select>
 				<span class="material-icons">
 account_circle
@@ -199,7 +219,7 @@ class Articles extends React.Component {
 					</a>
 				</h3>
 				<div class="collapse" id={"article-content-" +item.title.split(" ").join("-") + index.toString()}>
-					<p /*class="card card-body"*/>{item.content}</p>
+					<p>{item.content}</p>
 				</div>
 			</div>	
 		)
@@ -222,6 +242,7 @@ class Articles extends React.Component {
 		)
 	}
 }
+
 
 
 export default App;

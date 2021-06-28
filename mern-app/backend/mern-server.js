@@ -202,6 +202,10 @@ app.get("/companies/:company", (req,res) => {
 	});
 });
 
+app.get("/companies"), (req.res) => {
+	getAllComp
+});
+
 //POST Requests
 app.post("/companies/articles/:company", (req, res) => {
 	createArticle(req.body.company,req.body.title,req.body.content,console.log);

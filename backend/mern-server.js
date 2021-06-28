@@ -134,6 +134,13 @@ const getCompany = (companyName,done) => {
 	});
 };
 
+const getAllCompanies = (done) => {
+	Companies.find({}, (err, allCompany) => {
+		if (err) return console.log(err);
+		done(null,allCompany);
+	});
+};
+
 const updateCompany = (companyName,objToUpdate,newValue, done) => {
 	Companies.findOne({name: companyName}, (err, company) => {
 		if(err) return console.log(err);
@@ -178,11 +185,11 @@ const createArticle = (companyName, articleTitle, articleContent, done) => {
 //tests
 
 //updateRouter("g","192.168.0.0/24", "192.168.0.1", "ipsec", console.log);
-createCompany("Lotus Gold");
+//createCompany("Lotus Gold");
 //getCompany("Afghan Kush",(err, data) => console.log(data));
 //updateCompany("g", "address", "10.0.0.24/24",console.log);
 //createArticle("g","How to be a boss", "First thing's first, you just need to party",console.log);
-
+getAllCompanies(console.log);
 
 //Express config 
 const app = express();
@@ -200,6 +207,12 @@ app.get("/companies/:company", (req,res) => {
 	getCompany(req.params.company,(err,data)=> {
 		res.json(data);
 	});
+});
+
+app.get("/companies", (req,res) => {
+	getAllCompanies((err,data) => {
+		res.json(data);
+	})
 });
 
 //POST Requests
