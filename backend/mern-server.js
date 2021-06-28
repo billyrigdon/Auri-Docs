@@ -189,7 +189,7 @@ const createArticle = (companyName, articleTitle, articleContent, done) => {
 //getCompany("Afghan Kush",(err, data) => console.log(data));
 //updateCompany("g", "address", "10.0.0.24/24",console.log);
 //createArticle("g","How to be a boss", "First thing's first, you just need to party",console.log);
-getAllCompanies(console.log);
+//getAllCompanies(console.log);
 
 //Express config 
 const app = express();

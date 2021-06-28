@@ -32,21 +32,23 @@ class App extends React.Component {
 			}))
 	};
 
-	updateCompany(comp) {
+	updateCompany(e) {
+		console.log(e.target.value);
 		this.setState({
-			companyName: comp
+			companyName: e.target.value
 		});
 	}
-
 
 	componentWillMount() {
 		this.fetchCompany();		
 	}
 
+	componentWillUpdate() {
+		this.fetchCompany();
+	}
 
 	render() {
 		 return (
-			
 			<div id="app-container">
 				<Navbar />
 				<Topbar updateCompany={this.updateCompany} companyName={this.state.companyName}/>
@@ -54,7 +56,6 @@ class App extends React.Component {
 					<Articles setState={this.setState} fetchCompany={this.fetchCompany} companyName={this.state.companyName} articles={this.state.articles}/>
 				</div>
 			</div>
-
 		 )
 	}
 };
@@ -137,15 +138,9 @@ class Topbar extends React.Component {
 		this.fetchAllCompanies();
 	}
 
-	componentDidUpdate() {
-		this.props.updateCompany(this.state.selectedCompany)
-	}
-
-
 	render() {
-
 		const allCompanies = this.state.companyList.map((item) =>
-			<option value={item.name.toString()}>{item.name}</option>
+			<option value={item.name}>{item.name}</option>
 		)  
 		
 		return (
@@ -155,13 +150,13 @@ class Topbar extends React.Component {
 					<h1>Auri</h1>
 				</div>
 				<input type="text" />
-				<select name="Dropdown" id="Companies" onChange={this.updateSelectedCompany}>
+				<select name="Dropdown" id="Companies" onChange={this.props.updateCompany}>
 					<option value="">{this.props.companyName}</option>
 					{allCompanies}
 				</select>
 				<span class="material-icons">
-account_circle
-</span>
+					account_circle
+				</span>
 			</div>
 		)
 	}
@@ -174,15 +169,14 @@ class Articles extends React.Component {
 		this.state = {
 			newTitle: "",
 			newBody: "",
-			articles: [] 
+			articles: [],
+			companyName: this.props.companyName
 		};
 		this.updateArticle = this.updateArticle.bind(this);
 		this.handleTitleChange = this.handleTitleChange.bind(this);
 		this.handleBodyChange = this.handleBodyChange.bind(this);
 		this.fetchArticle = this.fetchArticle.bind(this);
 	}
-
-	
 
 	handleTitleChange(event) {
 		this.setState({
@@ -197,7 +191,7 @@ class Articles extends React.Component {
 	}
 
 	fetchArticle() {
-		fetch("http://127.0.0.1:1313/companies/" + this.props.companyName)
+		fetch("http://127.0.0.1:1313/companies/" + this.state.companyName)
 			.then(res => res.json())	
 			.then(res => this.setState({
 				articles: res.articles
@@ -222,15 +216,19 @@ class Articles extends React.Component {
 		});			
 	};
 
-
 	componentDidMount() {
 		this.fetchArticle();
 	}
 
-	render() {
-		
+	componentWillReceiveProps(nextProps) {
+		this.setState({ companyName: nextProps.companyName});  
+	}
 
-		
+	componentWillUpdate() {
+		this.fetchArticle();
+	}
+
+	render() {
 		const article = this.state.articles.map((item,index) => 
 			<div>
 				<h3 className="article-title">
@@ -244,7 +242,6 @@ class Articles extends React.Component {
 			</div>	
 		)
 		
-
 		return (
 			<div id="article-container">
 				<form onSubmit={(event) => {this.updateArticle(event); this.props.fetchCompany()}}>
@@ -262,7 +259,5 @@ class Articles extends React.Component {
 		)
 	}
 }
-
-
 
 export default App;
