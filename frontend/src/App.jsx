@@ -133,17 +133,9 @@ class Topbar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			companyList: [],
-			selectedCompany: this.props.companyName
+			companyList: []
 		};
 		this.fetchAllCompanies = this.fetchAllCompanies.bind(this);
-		this.updateSelectedCompany = this.updateSelectedCompany.bind(this);
-	}
-
-	updateSelectedCompany(newComp) {
-		this.setState({
-			selectedCompany: newComp
-		});
 	}
 
 	fetchAllCompanies() {
