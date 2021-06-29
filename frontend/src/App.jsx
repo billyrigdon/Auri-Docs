@@ -10,6 +10,7 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			nav: "companies",
 			companyName: "Lotus Gold",
 			address: "",
 			articles: [],
@@ -21,6 +22,7 @@ class App extends React.Component {
 		};
 		this.fetchCompany = this.fetchCompany.bind(this);
 		this.updateCompany = this.updateCompany.bind(this);
+		this.changeNav = this.changeNav.bind(this);
 	};
 
 	fetchCompany() {
@@ -33,9 +35,14 @@ class App extends React.Component {
 	};
 
 	updateCompany(e) {
-		console.log(e.target.value);
 		this.setState({
 			companyName: e.target.value
+		});
+	}
+
+	changeNav(navValue) {
+		this.setState({
+			nav: navValue
 		});
 	}
 
@@ -48,15 +55,28 @@ class App extends React.Component {
 	}
 
 	render() {
-		 return (
-			<div id="app-container">
-				<Navbar />
-				<Topbar updateCompany={this.updateCompany} companyName={this.state.companyName}/>
-				<div id="content-container">			 		
-					<Articles setState={this.setState} fetchCompany={this.fetchCompany} companyName={this.state.companyName} articles={this.state.articles}/>
+
+		if (this.state.nav === "companies") {
+			return (
+				<div id="app-container">
+					<Navbar changeNav={this.changeNav} />
+					<Topbar updateCompany={this.updateCompany} companyName={this.state.companyName}/>
+					<div id="content-container">			 		
+						<h1>TESTTESTTEST</h1>
+					</div>
 				</div>
-			</div>
-		 )
+		 	)
+		} else if (this.state.nav === "articles") {
+			return (
+				<div id="app-container">
+					<Navbar changeNav={this.changeNav} />
+					<Topbar updateCompany={this.updateCompany} companyName={this.state.companyName}/>
+					<div id="content-container">			 		
+						<Articles setState={this.setState} fetchCompany={this.fetchCompany} companyName={this.state.companyName} articles={this.state.articles}/>
+					</div>
+				</div>
+		 	)
+		}
 	}
 };
 
@@ -70,7 +90,11 @@ class Navbar extends React.Component {
 		return (
 			<nav id="navbar">
 				<ul>
-					<li className="nav-button">
+					<li className="nav-button" value="companies"onClick={() => this.props.changeNav("companies")}>
+						<span className="material-icons">business</span>
+						<h5>Companies</h5>
+					</li>
+					<li className="nav-button" onClick={() => this.props.changeNav("articles")}>
 						<span className="material-icons">book</span>
 						<h5>Articles</h5>
 					</li>
@@ -93,10 +117,6 @@ class Navbar extends React.Component {
 					<li className="nav-button">
 						<span className="material-icons">wifi</span>
 						<h5>Networks</h5>
-					</li>
-					<li className="nav-button">
-						<span className="material-icons">router</span>
-						<h5>Router</h5>
 					</li>
 					<li className="nav-button">
 						<span className="material-icons">storage</span>
