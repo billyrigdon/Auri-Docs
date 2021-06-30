@@ -18,11 +18,13 @@ class App extends React.Component {
 				subnet: "",
 				ipAddr: "",
 				vpn: ""
-			}
+			},
+			companyList: []
 		};
 		this.fetchCompany = this.fetchCompany.bind(this);
 		this.updateCompany = this.updateCompany.bind(this);
 		this.changeNav = this.changeNav.bind(this);
+		this.fetchAllCompanies = this.fetchAllCompanies.bind(this);
 	};
 
 	fetchCompany() {
@@ -31,6 +33,14 @@ class App extends React.Component {
 			.then(res => this.setState({
 				address: res.address,
 				router: res.router
+			}))
+	};
+
+	fetchAllCompanies() {
+		fetch("http://127.0.0.1:1313/companies/")
+			.then(res => res.json())
+			.then(res => this.setState({
+				companyList: res
 			}))
 	};
 
@@ -60,9 +70,9 @@ class App extends React.Component {
 			return (
 				<div id="app-container">
 					<Navbar changeNav={this.changeNav} />
-					<Topbar updateCompany={this.updateCompany} companyName={this.state.companyName}/>
-					<div id="content-container">			 		
-						<h1>TESTTESTTEST</h1>
+					<Topbar companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName}/>
+					<div id="content-container">
+						<Companies companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName} />
 					</div>
 				</div>
 		 	)
@@ -70,7 +80,7 @@ class App extends React.Component {
 			return (
 				<div id="app-container">
 					<Navbar changeNav={this.changeNav} />
-					<Topbar updateCompany={this.updateCompany} companyName={this.state.companyName}/>
+					<Topbar companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName}/>
 					<div id="content-container">			 		
 						<Articles setState={this.setState} fetchCompany={this.fetchCompany} companyName={this.state.companyName} articles={this.state.articles}/>
 					</div>
@@ -90,7 +100,7 @@ class Navbar extends React.Component {
 		return (
 			<nav id="navbar">
 				<ul>
-					<li className="nav-button" value="companies"onClick={() => this.props.changeNav("companies")}>
+					<li className="nav-button" onClick={() => this.props.changeNav("companies")}>
 						<span className="material-icons">business</span>
 						<h5>Companies</h5>
 					</li>
@@ -132,26 +142,16 @@ class Navbar extends React.Component {
 class Topbar extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			companyList: []
-		};
-		this.fetchAllCompanies = this.fetchAllCompanies.bind(this);
 	}
 
-	fetchAllCompanies() {
-		fetch("http://127.0.0.1:1313/companies/")
-			.then(res => res.json())
-			.then(res => this.setState({
-				companyList: res
-			}))
-	};
+	
 
 	componentDidMount() {
-		this.fetchAllCompanies();
+		this.props.fetchAllCompanies();
 	}
 
 	render() {
-		const allCompanies = this.state.companyList.map((item) =>
+		const allCompanies = this.props.companyList.map((item) =>
 			<option value={item.name}>{item.name}</option>
 		)  
 		
@@ -268,6 +268,32 @@ class Articles extends React.Component {
 				</div>
 			</div>
 
+		)
+	}
+}
+
+class Companies extends React.Component {
+	constructor(props){
+		super(props);
+	};
+
+	render() {
+		const allCompanies = this.props.companyList.map((item) =>
+			<div className="companyCard">
+				<h6>{item.name}</h6>
+				<div className="companyButtons">
+					<button className="btn btn-primary">Edit</button>
+					<button className="btn btn-danger">Delete</button>
+				</div>
+			</div>
+		) 		
+
+		return(
+			
+			<div className="company-container">
+				{allCompanies}
+				<button id="newCompanyButton" className="btn btn-secondary btn-lg btn-block">Add new company</button>
+			</div>
 		)
 	}
 }
