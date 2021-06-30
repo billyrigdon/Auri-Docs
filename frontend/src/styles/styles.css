@@ -195,9 +195,14 @@ p {
 /*Companies section*/
 
 #newCompanyButton {
-	margin-top: 1rem;
 	width: 100%;
 	background-color: #4a5364;
+	height:8vh;
+}
+
+#card-container {
+	height:82vh;
+	overflow-y:scroll;
 }
 
 .companyCard {
@@ -212,7 +217,7 @@ p {
 }
 
 .companyCard h6 {
-	font: size 1.5rem;
+	font-size: 1.5rem;
 	color:#19212e;
 }
 
@@ -223,5 +228,7 @@ p {
 .companyButtons button {
 	margin-left:.5rem;
 }
+
+
 
 

@@ -57,7 +57,8 @@ class App extends React.Component {
 	}
 
 	componentWillMount() {
-		this.fetchCompany();		
+		this.fetchCompany();
+		this.fetchAllCompanies();	
 	}
 
 	componentWillUpdate() {
@@ -144,12 +145,6 @@ class Topbar extends React.Component {
 		super(props);
 	}
 
-	
-
-	componentDidMount() {
-		this.props.fetchAllCompanies();
-	}
-
 	render() {
 		const allCompanies = this.props.companyList.map((item) =>
 			<option value={item.name}>{item.name}</option>
@@ -162,7 +157,7 @@ class Topbar extends React.Component {
 					<h1>Auri</h1>
 				</div>
 				<input type="text" />
-				<select name="Dropdown" id="Companies" onChange={this.props.updateCompany}>
+				<select name="Dropdown" id="Companies" value="" onChange={this.props.updateCompany}>
 					<option value="">{this.props.companyName}</option>
 					{allCompanies}
 				</select>
@@ -277,21 +272,35 @@ class Companies extends React.Component {
 		super(props);
 	};
 
+	/*
+	componentDidMount() {
+		this.props.fetchAllCompanies();
+	}
+
+	componentDidUpdate() {
+		this.props.fetchAllCompanies();
+	}
+	*/
+
 	render() {
 		const allCompanies = this.props.companyList.map((item) =>
 			<div className="companyCard">
 				<h6>{item.name}</h6>
 				<div className="companyButtons">
+					<button className="btn btn-success" value={item.name} onClick={this.props.updateCompany}>Make Current</button>
 					<button className="btn btn-primary">Edit</button>
 					<button className="btn btn-danger">Delete</button>
 				</div>
 			</div>
-		) 		
+		)
 
 		return(
 			
 			<div className="company-container">
-				{allCompanies}
+				<h6>{this.props.companyName}</h6>
+				<div id="card-container">
+					{allCompanies}
+				</div>
 				<button id="newCompanyButton" className="btn btn-secondary btn-lg btn-block">Add new company</button>
 			</div>
 		)
