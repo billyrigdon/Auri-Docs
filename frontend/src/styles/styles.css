@@ -196,27 +196,95 @@ p {
 
 /*Companies section*/
 
-#newCompanyButton {
-	width: 100%;
-	background-color: #4a5364;
-	height:8vh;
+#company-container {
+	display:flex;
+	flex-direction: row;
+	position: relative;
+	width:100%;
+	height:100%;
+}
+
+#company-info-container {
+	width:50%;
+	height:100%;
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+}
+
+.companyEditFields {
+	width:90%;
+	display:flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.companyEditFields button {
+	border-radius: 0;
+	width:20%;
+	padding:1rem;
+	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+	background-color: #455062;
+}
+
+.companyEditFields input {
+	width:77%;
+	padding:1rem;
+	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+	border:none;
+	color:#19212e;
+}
+
+#current-company-card {
+	display: flex;
+	flex-direction: column;
+	width:90%;
+	align-items: center;
+	position:relative;
+	justify-content: center;
+	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+	padding:5rem;
+	background-color: #ffffff;
+}
+
+#current-company-card h6 {
+	font-size: 1.5rem;
+	color:#19212e;
+}
+
+#current-company-card h4 {
+	font-size:2.4rem;
+	color:#19212e;
+}
+
+#company-delete {
+	width:90%;
+	padding:1rem;
 }
 
 #card-container {
-	/*height:82vh;*/
-	height: 15vh;
+	height:100%;
+	width:50%;
 	overflow-y:scroll;
+	display:flex;
+	flex-direction: column;
+	
 }
 
 .companyCard {
 	display: flex;
 	flex-direction: row;
-	width:100%;
+	width:90%;
+	height:30%;
 	align-items: center;
+	position:relative;
 	justify-content: space-between;
 	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
-	padding:2rem;
-	margin-top:1rem;
+	padding:5rem;
+	margin-top:1.3rem;
+	margin-left:5%;
+	background-color: #ffffff;
 }
 
 .companyCard h6 {
@@ -224,12 +292,8 @@ p {
 	color:#19212e;
 }
 
-.companyButtons {
-	width:auto;
-}
-
-.companyButtons button {
-	margin-left:.5rem;
+.companyCard button {
+	background-color: #679bdb;
 }
 
 

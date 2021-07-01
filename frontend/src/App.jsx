@@ -368,29 +368,47 @@ class Companies extends React.Component {
 		const allCompanies = this.props.companyList.map((item) =>
 			<div className="companyCard">
 				<h6>{item.name}</h6>
-				<div className="companyButtons">
-					<button className="btn btn-success" value={item.name} onClick={this.props.updateCompany}>Select</button>				
-					
-				</div>
-				
+				<button className="btn btn-success" value={item.name} onClick={this.props.updateCompany}>Select</button>				
 			</div>
 		)
 
 		return(
 			
-			<div key={this.props.companyName} className="company-container">
+			<div key={this.props.companyName} id="company-container">
+				
+				<div id="company-info-container">
+					<form className="companyEditFields" onSubmit={this.props.createCompany}>
+						<button type="submit" className="btn btn-primary">Create</button>
+						<input onChange={this.props.handleNewCompanyChange} value={this.props.newCompany} type="text" />	
+					</form>
+					<div id="current-company-card">
+						<h6>Current Company</h6>
+						<h4>{this.props.companyName}</h4>
+					</div>
+					<form className="companyEditFields" onSubmit={this.props.updateCompanyName}>
+						<button type="submit" className="btn btn-primary">Edit</button>
+						<input onChange={this.props.handleNameChange} value={this.props.newName} placeholder={this.props.companyName} type="text" />
+					</form>
+					<form className="companyEditFields" onSubmit="">
+						<button type="submit" className="btn btn-primary">Edit</button>
+						<input onChange={this.props.handleNameChange} value={this.props.newName} placeholder={this.props.companyName} type="text" />
+						
+					</form>
+					<form className="companyEditFields" onSubmit="">
+						<button type="submit" className="btn btn-primary">Edit</button>
+						<input onChange={this.props.handleNameChange} value={this.props.newName} placeholder={this.props.companyName} type="text" />
+					</form>
+					<form className="companyEditFields" onSubmit="">
+						<button type="submit" className="btn btn-primary">Edit</button>
+						<input onChange={this.props.handleNameChange} value={this.props.newName} placeholder={this.props.companyName} type="text" />	
+					</form>
+					<button id="company-delete" className="btn btn-danger" value={this.props.companyName} onClick={this.props.deleteCompany}>Delete</button>
+				</div>
+
 				<div id="card-container">
 					{allCompanies}
 				</div>
-				<form onSubmit={this.props.updateCompanyName}>
-					<input onChange={this.props.handleNameChange} value={this.props.newName} placeholder={this.props.companyName} type="text" />
-					<button type="submit" className="btn btn-primary">Edit</button>
-				</form>
-				<form onSubmit={this.props.createCompany}>
-					<input onChange={this.props.handleNewCompanyChange} value={this.props.newCompany} type="text" />
-					<button type="submit" className="btn">Add new company</button>
-				</form>
-				<button className="btn btn-danger" value={this.props.companyName} onClick={this.props.deleteCompany}>Delete</button>
+				
 			</div>
 		)
 	}
