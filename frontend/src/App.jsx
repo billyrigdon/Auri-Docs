@@ -54,12 +54,13 @@ class App extends React.Component {
 			}))
 	};
 
+	//changes the selected company
 	updateCompany(e) {
 		this.setState({
 			companyName: e.target.value
 		});
 	};
-
+	//changes the content view based on the selected nav state
 	changeNav(navValue) {
 		this.setState({
 			nav: navValue
@@ -67,39 +68,43 @@ class App extends React.Component {
 	};
 
 	createCompany(event) {
-		event.preventDefault();
+		if (event.target.value) {
+			event.preventDefault();
 
-		const requestOptions = {
-			method: "POST",
-			headers: {"Content-Type": "application/json"},
-			body: JSON.stringify({company: this.state.newCompany})
-		};
+			const requestOptions = {
+				method: "POST",
+				headers: {"Content-Type": "application/json"},
+				body: JSON.stringify({company: this.state.newCompany})
+			};
 
-		fetch("http://127.0.0.1:1313/companies/create", requestOptions)
-			.then(res => res.json())
-			.then(this.setState({
-				companyName: this.state.newCompany,
-				newCompany: ""
-			}))
-			
+			fetch("http://127.0.0.1:1313/companies/create", requestOptions)
+				.then(res => res.json())
+				.then(this.setState({
+					companyName: this.state.newCompany,
+					newCompany: ""
+				}));
+		}
 	}
 
 	updateCompanyName(event) {
-		event.preventDefault();
+		if (this.state.companyName) {
+			if (event.target.value) {
+				event.preventDefault();
 
-		const requestOptions = {
-			method: "POST",
-			headers: {"Content-Type": "application/json"},
-			body: JSON.stringify({company: this.state.companyName, newName: this.state.newName})
-		};
+				const requestOptions = {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify({company: this.state.companyName, newName: this.state.newName})
+				};
 		
-		fetch("http://127.0.0.1:1313/companies/" + this.state.companyName + "/name", requestOptions)
-			.then(res => res.json())
-			.then(this.setState({
-				companyName: this.state.newName,
-				newName: ""
-			}))
-		
+				fetch("http://127.0.0.1:1313/companies/" + this.state.companyName + "/name", requestOptions)
+					.then(res => res.json())
+					.then(this.setState({
+						companyName: this.state.newName,
+						newName: ""
+					}));
+			}
+		}
 		
 	};
 
@@ -364,8 +369,8 @@ class Companies extends React.Component {
 			<div className="companyCard">
 				<h6>{item.name}</h6>
 				<div className="companyButtons">
-					<button className="btn btn-success" value={item.name} onClick={this.props.updateCompany}>Make Current</button>				
-					<button className="btn btn-danger" value={item.name} onClick={this.props.deleteCompany}>Delete</button>
+					<button className="btn btn-success" value={item.name} onClick={this.props.updateCompany}>Select</button>				
+					
 				</div>
 				
 			</div>
@@ -385,6 +390,7 @@ class Companies extends React.Component {
 					<input onChange={this.props.handleNewCompanyChange} value={this.props.newCompany} type="text" />
 					<button type="submit" className="btn">Add new company</button>
 				</form>
+				<button className="btn btn-danger" value={this.props.companyName} onClick={this.props.deleteCompany}>Delete</button>
 			</div>
 		)
 	}
