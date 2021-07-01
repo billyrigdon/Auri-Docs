@@ -59,6 +59,7 @@ p {
 	height:90vh;
 	background-color:#202b2e;
 	box-shadow: 1px 0px 4px 6px rgba(0, 0, 0, 0.25);
+	z-index: 4;
 }
 
 #navbar ul {
@@ -73,6 +74,7 @@ p {
 	justify-content: center;
 	align-items: center;
 	color:#dbd5b9;
+	cursor: pointer;
 }
 
 .nav-button span {
@@ -201,7 +203,8 @@ p {
 }
 
 #card-container {
-	height:82vh;
+	/*height:82vh;*/
+	height: 15vh;
 	overflow-y:scroll;
 }
 

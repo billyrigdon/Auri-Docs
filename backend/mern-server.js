@@ -152,6 +152,13 @@ const updateCompany = (companyName,objToUpdate,newValue, done) => {
 	});
 };
 
+const deleteCompany = (companyName,done) => {
+	Companies.findOneAndRemove({name: companyName}, (err, company) => {
+		if(err) return console.log(err);
+		done(null,company);
+	});
+};
+
 //Router CRUD functions
 const updateRouter = (companyName, subnetVal, ipAddrVal, dhcpVal, portForVal,notesVal, vpnVal, done) => {
 	Companies.findOne({name:companyName}, (err, company) => {
@@ -185,11 +192,16 @@ const createArticle = (companyName, articleTitle, articleContent, done) => {
 //tests
 
 //updateRouter("g","192.168.0.0/24", "192.168.0.1", "ipsec", console.log);
-//createCompany("Lotus Gold");
+//createCompany("test1");
+//createCompany("test2");
+//createCompany("test3");
+//createCompany("test4");
+//createCompany("test5");
 //getCompany("Afghan Kush",(err, data) => console.log(data));
 //updateCompany("g", "address", "10.0.0.24/24",console.log);
 //createArticle("g","How to be a boss", "First thing's first, you just need to party",console.log);
 //getAllCompanies(console.log);
+//deleteCompany("29845",console.log)
 
 //Express config 
 const app = express();
@@ -205,6 +217,7 @@ app.listen(port, () => {
 //GET Requests
 app.get("/companies/:company", (req,res) => {
 	getCompany(req.params.company,(err,data)=> {
+		console.log(req.params.company);
 		res.json(data);
 	});
 });
@@ -216,8 +229,25 @@ app.get("/companies", (req,res) => {
 });
 
 //POST Requests
+app.post("/companies/create", (req,res) => {
+	console.log(req.body.company);
+	createCompany(req.body.company);
+	res.send("Done");
+})
+
+app.post("/companies/:company/name", (req,res) => {
+	updateCompany(req.body.company,"name",req.body.newName,console.log);
+	res.send("Done");
+});
+
+app.post("/companies/:company/delete", (req,res) => {
+	deleteCompany(req.body.company,console.log);
+	res.send("Done");
+});
+
 app.post("/companies/articles/:company", (req, res) => {
 	createArticle(req.body.company,req.body.title,req.body.content,console.log);
 	res.send("Done");
-})
+});
+
 

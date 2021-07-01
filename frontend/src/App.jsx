@@ -11,7 +11,11 @@ class App extends React.Component {
 		super(props);
 		this.state = {
 			nav: "companies",
-			companyName: "Lotus Gold",
+			companyName: "",
+			newName: "",
+			newCompany: "",
+			oldName: "",
+			counter: 0,
 			address: "",
 			articles: [],
 			router: {
@@ -25,6 +29,12 @@ class App extends React.Component {
 		this.updateCompany = this.updateCompany.bind(this);
 		this.changeNav = this.changeNav.bind(this);
 		this.fetchAllCompanies = this.fetchAllCompanies.bind(this);
+		this.updateCompanyName = this.updateCompanyName.bind(this);
+		this.handleNameChange = this.handleNameChange.bind(this);
+		this.deleteCompany = this.deleteCompany.bind(this);
+		this.createCompany = this.createCompany.bind(this);
+		this.handleNewCompanyChange = this.handleNewCompanyChange.bind(this);
+		
 	};
 
 	fetchCompany() {
@@ -48,32 +58,106 @@ class App extends React.Component {
 		this.setState({
 			companyName: e.target.value
 		});
-	}
+	};
 
 	changeNav(navValue) {
 		this.setState({
 			nav: navValue
 		});
+	};
+
+	createCompany(event) {
+		event.preventDefault();
+
+		const requestOptions = {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({company: this.state.newCompany})
+		};
+
+		fetch("http://127.0.0.1:1313/companies/create", requestOptions)
+			.then(res => res.json())
+			.then(this.setState({
+				companyName: this.state.newCompany,
+				newCompany: ""
+			}))
+			
 	}
 
-	componentWillMount() {
+	updateCompanyName(event) {
+		event.preventDefault();
+
+		const requestOptions = {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({company: this.state.companyName, newName: this.state.newName})
+		};
+		
+		fetch("http://127.0.0.1:1313/companies/" + this.state.companyName + "/name", requestOptions)
+			.then(res => res.json())
+			.then(this.setState({
+				companyName: this.state.newName,
+				newName: ""
+			}))
+		
+		
+	};
+
+	handleNewCompanyChange(event) {
+		this.setState({
+			newCompany: event.target.value
+		});
+	};
+
+	handleNameChange(event) {
+		this.setState({
+			newName: event.target.value
+		});
+	};
+
+	deleteCompany(event) {
+		event.preventDefault();
+
+		const requestOptions = {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({company: event.target.value})
+		};
+		
+		fetch("http://127.0.0.1:1313/companies/" + event.target.value + "/delete", requestOptions)
+			.then(res => res.json())
+			.then(this.setState({
+				companyName: ""
+			}))
+	}
+
+	componentDidMount() {
 		this.fetchCompany();
 		this.fetchAllCompanies();	
-	}
+	};
 
-	componentWillUpdate() {
-		this.fetchCompany();
-	}
+
+	componentDidUpdate(prevProps,prevState) {
+		if (prevState.companyName !== this.state.companyName) {
+			setTimeout(()=> {
+				this.fetchCompany();
+				this.fetchAllCompanies();
+			},1200)
+		} 
+	};
+
+
 
 	render() {
 
-		if (this.state.nav === "companies") {
+		if (this.state.nav === "companies" || this.state.companyName === "") {
 			return (
 				<div id="app-container">
 					<Navbar changeNav={this.changeNav} />
 					<Topbar companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName}/>
+					<h1>{this.state.counter}</h1>
 					<div id="content-container">
-						<Companies companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName} />
+						<Companies newCompany={this.state.newCompany} handleNewCompanyChange={this.handleNewCompanyChange} createCompany={this.createCompany} deleteCompany={this.deleteCompany} handleNameChange={this.handleNameChange} newName={this.state.newName} updateCompanyName={this.updateCompanyName} companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName} />
 					</div>
 				</div>
 		 	)
@@ -270,38 +354,37 @@ class Articles extends React.Component {
 class Companies extends React.Component {
 	constructor(props){
 		super(props);
+		this.state = {
+			companyName: this.props.companyName
+		}
 	};
-
-	/*
-	componentDidMount() {
-		this.props.fetchAllCompanies();
-	}
-
-	componentDidUpdate() {
-		this.props.fetchAllCompanies();
-	}
-	*/
 
 	render() {
 		const allCompanies = this.props.companyList.map((item) =>
 			<div className="companyCard">
 				<h6>{item.name}</h6>
 				<div className="companyButtons">
-					<button className="btn btn-success" value={item.name} onClick={this.props.updateCompany}>Make Current</button>
-					<button className="btn btn-primary">Edit</button>
-					<button className="btn btn-danger">Delete</button>
+					<button className="btn btn-success" value={item.name} onClick={this.props.updateCompany}>Make Current</button>				
+					<button className="btn btn-danger" value={item.name} onClick={this.props.deleteCompany}>Delete</button>
 				</div>
+				
 			</div>
 		)
 
 		return(
 			
-			<div className="company-container">
-				<h6>{this.props.companyName}</h6>
+			<div key={this.props.companyName} className="company-container">
 				<div id="card-container">
 					{allCompanies}
 				</div>
-				<button id="newCompanyButton" className="btn btn-secondary btn-lg btn-block">Add new company</button>
+				<form onSubmit={this.props.updateCompanyName}>
+					<input onChange={this.props.handleNameChange} value={this.props.newName} placeholder={this.props.companyName} type="text" />
+					<button type="submit" className="btn btn-primary">Edit</button>
+				</form>
+				<form onSubmit={this.props.createCompany}>
+					<input onChange={this.props.handleNewCompanyChange} value={this.props.newCompany} type="text" />
+					<button type="submit" className="btn">Add new company</button>
+				</form>
 			</div>
 		)
 	}
