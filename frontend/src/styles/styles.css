@@ -146,13 +146,15 @@ p {
 #article-container form input {
 	height:5vh;
 	margin:2rem 2rem 0 2rem;
-	border-radius: 10px;
+	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+	border:none;
 }
 
 #article-container form textarea {
 	height:60vh;
 	margin:1rem 2rem 1rem 2rem;
-	border-radius: 10px;
+	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+	border:none;
 }
 
 #article-container form button {
@@ -161,7 +163,8 @@ p {
 	font-size:1.5rem;
 	background-color: rgba(14, 26, 48, 0.75);
 	color:white;
-	border-radius: 10px;
+	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+	border:none;
 }
 
 #articles {
@@ -194,6 +197,20 @@ p {
 	color:#19212e;
 }
 
+.article-cards {
+	display: flex;
+	flex-direction: column;
+	width:90%;
+	min-height:30%;
+	align-items: center;
+	position:relative;
+	justify-content: space-between;
+	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+	padding:5rem;
+	margin-top:1.3rem;
+	margin-left:5%;
+	background-color: #ffffff;
+}
 /*Companies section*/
 
 #company-container {

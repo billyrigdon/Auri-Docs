@@ -240,6 +240,10 @@ app.post("/companies/:company/name", (req,res) => {
 	res.send("Done");
 });
 
+app.post("/companies/:company/address", (req,res) => {
+	updateCompany(req.body.company, "address", req.body.address, console.log)
+});
+
 app.post("/companies/:company/delete", (req,res) => {
 	deleteCompany(req.body.company,console.log);
 	res.send("Done");

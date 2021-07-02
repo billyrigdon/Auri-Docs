@@ -17,6 +17,7 @@ class App extends React.Component {
 			oldName: "",
 			counter: 0,
 			address: "",
+			newAddress: "",
 			articles: [],
 			router: {
 				subnet: "",
@@ -34,6 +35,8 @@ class App extends React.Component {
 		this.deleteCompany = this.deleteCompany.bind(this);
 		this.createCompany = this.createCompany.bind(this);
 		this.handleNewCompanyChange = this.handleNewCompanyChange.bind(this);
+		this.handleAddressChange = this.handleAddressChange.bind(this);
+		this.updateCompanyAddress = this.updateCompanyAddress.bind(this);
 		
 	};
 
@@ -104,8 +107,35 @@ class App extends React.Component {
 						newName: ""
 					}));
 			}
-		}
+		}	
+	};
+
+//Next two functions are for updating the company address 
+	updateCompanyAddress(event) {
+		if (this.state.companyName) {
+			if (event.target.value !== "") {
+				event.preventDefault();
+
+				const requestOptions = {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify({company: this.state.companyName, address: this.state.newAddress})
+				};
 		
+				fetch("http://127.0.0.1:1313/companies/" + this.state.companyName + "/address", requestOptions)
+					.then(res => res.json())
+					.then(this.setState({
+						address: this.state.newAddress,
+						newAddress: ""
+					}));
+			}
+		}
+	};
+
+	handleAddressChange(event) {
+		this.setState({
+			newAddress: event.target.value
+		});
 	};
 
 	handleNewCompanyChange(event) {
@@ -159,10 +189,10 @@ class App extends React.Component {
 			return (
 				<div id="app-container">
 					<Navbar changeNav={this.changeNav} />
-					<Topbar companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName}/>
+					<Topbar  companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName}/>
 					<h1>{this.state.counter}</h1>
 					<div id="content-container">
-						<Companies newCompany={this.state.newCompany} handleNewCompanyChange={this.handleNewCompanyChange} createCompany={this.createCompany} deleteCompany={this.deleteCompany} handleNameChange={this.handleNameChange} newName={this.state.newName} updateCompanyName={this.updateCompanyName} companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName} />
+						<Companies handleAddressChange={this.handleAddressChange} updateCompanyAddress={this.updateCompanyAddress} address={this.state.address} newAddress={this.state.newAddress} newCompany={this.state.newCompany} handleNewCompanyChange={this.handleNewCompanyChange} createCompany={this.createCompany} deleteCompany={this.deleteCompany} handleNameChange={this.handleNameChange} newName={this.state.newName} updateCompanyName={this.updateCompanyName} companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName} />
 					</div>
 				</div>
 		 	)
@@ -326,7 +356,7 @@ class Articles extends React.Component {
 
 	render() {
 		const article = this.state.articles.map((item,index) => 
-			<div>
+			<div className="article-cards">
 				<h3 className="article-title">
 					<a data-toggle="collapse" data-target={"#article-content-"+ item.title.split(" ").join("-") + index.toString()} aria-expanded="false" aria-controls={"article-content-" + item.title + index.toString()}>
 						{item.title}<span class="material-icons">expand_more</span>
@@ -386,20 +416,20 @@ class Companies extends React.Component {
 						<h4>{this.props.companyName}</h4>
 					</div>
 					<form className="companyEditFields" onSubmit={this.props.updateCompanyName}>
-						<button type="submit" className="btn btn-primary">Edit</button>
-						<input onChange={this.props.handleNameChange} value={this.props.newName} placeholder={this.props.companyName} type="text" />
+						<button type="submit" className="btn btn-primary">Update</button>
+						<input onChange={this.props.handleNameChange} value={this.props.newName} placeholder={"Name: " + this.props.companyName} type="text" />
 					</form>
-					<form className="companyEditFields" onSubmit="">
-						<button type="submit" className="btn btn-primary">Edit</button>
-						<input onChange={this.props.handleNameChange} value={this.props.newName} placeholder={this.props.companyName} type="text" />
+					<form className="companyEditFields" onSubmit={this.props.updateCompanyAddress}>
+						<button type="submit" className="btn btn-primary">Update</button>
+						<input onChange={this.props.handleAddressChange} value={this.props.newAddress} placeholder={"Address: " + this.props.address} type="text" />
 						
 					</form>
 					<form className="companyEditFields" onSubmit="">
-						<button type="submit" className="btn btn-primary">Edit</button>
+						<button type="submit" className="btn btn-primary">Update</button>
 						<input onChange={this.props.handleNameChange} value={this.props.newName} placeholder={this.props.companyName} type="text" />
 					</form>
 					<form className="companyEditFields" onSubmit="">
-						<button type="submit" className="btn btn-primary">Edit</button>
+						<button type="submit" className="btn btn-primary">Update</button>
 						<input onChange={this.props.handleNameChange} value={this.props.newName} placeholder={this.props.companyName} type="text" />	
 					</form>
 					<button id="company-delete" className="btn btn-danger" value={this.props.companyName} onClick={this.props.deleteCompany}>Delete</button>
