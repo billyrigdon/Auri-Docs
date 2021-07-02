@@ -68,7 +68,7 @@ class App extends React.Component {
 	};
 
 	createCompany(event) {
-		if (event.target.value) {
+		if (event.target.value !== "") {
 			event.preventDefault();
 
 			const requestOptions = {
@@ -88,7 +88,7 @@ class App extends React.Component {
 
 	updateCompanyName(event) {
 		if (this.state.companyName) {
-			if (event.target.value) {
+			if (event.target.value !== "") {
 				event.preventDefault();
 
 				const requestOptions = {
