@@ -12,18 +12,15 @@ class App extends React.Component {
 		this.state = {
 			nav: "companies",
 			companyName: "",
-			newName: "",
 			newCompany: "",
-			oldName: "",
-			counter: 0,
+			newName: "",
 			address: "",
 			newAddress: "",
+			emailAddr: "",
+			newEmailAddr: "",
+			phone: "",
+			newPhone: "",
 			articles: [],
-			router: {
-				subnet: "",
-				ipAddr: "",
-				vpn: ""
-			},
 			companyList: []
 		};
 		this.fetchCompany = this.fetchCompany.bind(this);
@@ -37,7 +34,10 @@ class App extends React.Component {
 		this.handleNewCompanyChange = this.handleNewCompanyChange.bind(this);
 		this.handleAddressChange = this.handleAddressChange.bind(this);
 		this.updateCompanyAddress = this.updateCompanyAddress.bind(this);
-		
+		this.updateCompanyEmail = this.updateCompanyEmail.bind(this);
+		this.handleEmailChange = this.handleEmailChange.bind(this);	
+		this.updateCompanyPhone = this.updateCompanyPhone.bind(this);
+		this.handlePhoneChange = this.handlePhoneChange.bind(this);	
 	};
 
 	fetchCompany() {
@@ -45,7 +45,8 @@ class App extends React.Component {
 			.then(res => res.json())	
 			.then(res => this.setState({
 				address: res.address,
-				router: res.router
+				emailAddr: res.emailAddr,
+				phone: res.phone
 			}))
 	};
 
@@ -57,19 +58,20 @@ class App extends React.Component {
 			}))
 	};
 
-	//changes the selected company
+//changes the selected company
 	updateCompany(e) {
 		this.setState({
 			companyName: e.target.value
 		});
 	};
-	//changes the content view based on the selected nav state
+//changes the content view based on the selected nav state
 	changeNav(navValue) {
 		this.setState({
 			nav: navValue
 		});
 	};
 
+//functions to handle creating/deleting companies
 	createCompany(event) {
 		if (event.target.value !== "") {
 			event.preventDefault();
@@ -87,8 +89,31 @@ class App extends React.Component {
 					newCompany: ""
 				}));
 		}
-	}
+	};
 
+	handleNewCompanyChange(event) {
+		this.setState({
+			newCompany: event.target.value
+		});
+	};
+
+	deleteCompany(event) {
+		event.preventDefault();
+
+		const requestOptions = {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({company: event.target.value})
+		};
+		
+		fetch("http://127.0.0.1:1313/companies/" + event.target.value + "/delete", requestOptions)
+			.then(res => res.json())
+			.then(this.setState({
+				companyName: ""
+			}))
+	};
+
+//functions to handle company name updates
 	updateCompanyName(event) {
 		if (this.state.companyName) {
 			if (event.target.value !== "") {
@@ -110,7 +135,13 @@ class App extends React.Component {
 		}	
 	};
 
-//Next two functions are for updating the company address 
+	handleNameChange(event) {
+		this.setState({
+			newName: event.target.value
+		});
+	};
+
+//Functions to update company information 
 	updateCompanyAddress(event) {
 		if (this.state.companyName) {
 			if (event.target.value !== "") {
@@ -138,39 +169,67 @@ class App extends React.Component {
 		});
 	};
 
-	handleNewCompanyChange(event) {
-		this.setState({
-			newCompany: event.target.value
-		});
-	};
+	updateCompanyEmail(event) {
+		if (this.state.companyName) {
+			if (event.target.value !== "") {
+				event.preventDefault();
 
-	handleNameChange(event) {
-		this.setState({
-			newName: event.target.value
-		});
-	};
-
-	deleteCompany(event) {
-		event.preventDefault();
-
-		const requestOptions = {
-			method: "POST",
-			headers: {"Content-Type": "application/json"},
-			body: JSON.stringify({company: event.target.value})
-		};
+				const requestOptions = {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify({company: this.state.companyName, emailAddr: this.state.newEmailAddr})
+				};
 		
-		fetch("http://127.0.0.1:1313/companies/" + event.target.value + "/delete", requestOptions)
-			.then(res => res.json())
-			.then(this.setState({
-				companyName: ""
-			}))
-	}
+				fetch("http://127.0.0.1:1313/companies/" + this.state.companyName + "/email", requestOptions)
+					.then(res => res.json())
+					.then(this.setState({
+						emailAddr: this.state.newEmailAddr,
+						newEmailAddr: ""
+					}));
+			}
+		}
+	};
 
+	handleEmailChange(event) {
+		this.setState({
+			newEmailAddr: event.target.value
+		});
+	};
+
+	updateCompanyPhone(event) {
+		if (this.state.companyName) {
+			if (event.target.value !== "") {
+				event.preventDefault();
+
+				const requestOptions = {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify({company: this.state.companyName, phone: this.state.newPhone})
+				};
+		
+				fetch("http://127.0.0.1:1313/companies/" + this.state.companyName + "/phone", requestOptions)
+					.then(res => res.json())
+					.then(this.setState({
+						phone: this.state.newPhone,
+						newPhone: ""
+					}));
+			}
+		}
+	};
+
+	handlePhoneChange(event) {
+		this.setState({
+			newPhone: event.target.value
+		});
+	};
+
+
+
+//React Hooks
 	componentDidMount() {
 		this.fetchCompany();
 		this.fetchAllCompanies();	
 	};
-
 
 	componentDidUpdate(prevProps,prevState) {
 		if (prevState.companyName !== this.state.companyName) {
@@ -181,8 +240,6 @@ class App extends React.Component {
 		} 
 	};
 
-
-
 	render() {
 
 		if (this.state.nav === "companies" || this.state.companyName === "") {
@@ -192,7 +249,7 @@ class App extends React.Component {
 					<Topbar  companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName}/>
 					<h1>{this.state.counter}</h1>
 					<div id="content-container">
-						<Companies handleAddressChange={this.handleAddressChange} updateCompanyAddress={this.updateCompanyAddress} address={this.state.address} newAddress={this.state.newAddress} newCompany={this.state.newCompany} handleNewCompanyChange={this.handleNewCompanyChange} createCompany={this.createCompany} deleteCompany={this.deleteCompany} handleNameChange={this.handleNameChange} newName={this.state.newName} updateCompanyName={this.updateCompanyName} companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName} />
+						<Companies handlePhoneChange={this.handlePhoneChange} updateCompanyPhone={this.updateCompanyPhone} newEmailAddr={this.state.newEmailAddr} emailAddr={this.state.emailAddr} newPhone={this.state.newPhone} phone={this.state.phone} handleEmailChange={this.handleEmailChange} updateCompanyEmail={this.updateCompanyEmail} handleAddressChange={this.handleAddressChange} updateCompanyAddress={this.updateCompanyAddress} address={this.state.address} newAddress={this.state.newAddress} newCompany={this.state.newCompany} handleNewCompanyChange={this.handleNewCompanyChange} createCompany={this.createCompany} deleteCompany={this.deleteCompany} handleNameChange={this.handleNameChange} newName={this.state.newName} updateCompanyName={this.updateCompanyName} companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName} />
 					</div>
 				</div>
 		 	)
@@ -350,8 +407,9 @@ class Articles extends React.Component {
 		this.setState({ companyName: nextProps.companyName});  
 	}
 
+	
 	componentDidUpdate(prevProps,prevState) {
-		if (prevState.articles === this.state.articles) {
+		if (this.state.companyName !== prevState.companyName) {
 			setTimeout(()=> {
 				this.fetchArticle();
 			},1200)
@@ -413,7 +471,7 @@ class Companies extends React.Component {
 				<div id="company-info-container">
 					<form className="companyEditFields" onSubmit={this.props.createCompany}>
 						<button type="submit" className="btn">Create</button>
-						<input onChange={this.props.handleNewCompanyChange} value={this.props.newCompany} type="text" />	
+						<input onChange={this.props.handleNewCompanyChange} value={this.props.newCompany} placeholder="Enter New Company Name"type="text" required/>	
 					</form>
 					<div id="current-company-card">
 						<h6>Current Company</h6>
@@ -421,20 +479,20 @@ class Companies extends React.Component {
 					</div>
 					<form className="companyEditFields" onSubmit={this.props.updateCompanyName}>
 						<button type="submit" className="btn">Update</button>
-						<input onChange={this.props.handleNameChange} value={this.props.newName} placeholder={"Name: " + this.props.companyName} type="text" />
+						<input onChange={this.props.handleNameChange} value={this.props.newName} placeholder={"Name: " + this.props.companyName} type="text" required/>
 					</form>
 					<form className="companyEditFields" onSubmit={this.props.updateCompanyAddress}>
 						<button type="submit" className="btn">Update</button>
-						<input onChange={this.props.handleAddressChange} value={this.props.newAddress} placeholder={"Address: " + this.props.address} type="text" />
+						<input onChange={this.props.handleAddressChange} value={this.props.newAddress} placeholder={"Address: " + this.props.address} type="text" required/>
 						
 					</form>
-					<form className="companyEditFields" onSubmit="">
+					<form className="companyEditFields" onSubmit={this.props.updateCompanyEmail}>
 						<button type="submit" className="btn">Update</button>
-						<input onChange={this.props.handleNameChange} value={this.props.newName} placeholder={this.props.companyName} type="text" />
+						<input onChange={this.props.handleEmailChange} value={this.props.newEmailAddr} placeholder={"Email: " + this.props.emailAddr} type="email" required />
 					</form>
-					<form className="companyEditFields" onSubmit="">
+					<form className="companyEditFields" onSubmit={this.props.updateCompanyPhone}>
 						<button type="submit" className="btn">Update</button>
-						<input onChange={this.props.handleNameChange} value={this.props.newName} placeholder={this.props.companyName} type="text" />	
+						<input onChange={this.props.handlePhoneChange} value={this.props.newPhone} placeholder={"Phone: " + this.props.phone} type="tel" required/>	
 					</form>
 					<button id="company-delete" className="btn btn-danger" value={this.props.companyName} onClick={this.props.deleteCompany}>Delete</button>
 				</div>
@@ -447,5 +505,15 @@ class Companies extends React.Component {
 		)
 	}
 }
+/*
+class Applications extends React.Component {
+	constructor(props) {
+		super(props);
+	};
 
+	render() {
+
+	}
+}
+*/
 export default App;

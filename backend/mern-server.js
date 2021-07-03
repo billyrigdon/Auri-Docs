@@ -1,8 +1,9 @@
 //Dependencies
-const mongoose = require('mongoose');
-const express = require('express');
+const mongoose = require("mongoose");
+const express = require("express");
 const cors = require("cors");
-require('dotenv').config();
+require("mongodb");
+require("dotenv").config();
 
 //Global Variables
 const port = process.env.PORT
@@ -14,6 +15,8 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 const companySchema = new mongoose.Schema({
 	name: {type: String, required: true},
 	address: {type: String, default:""},
+	emailAddr: String,
+	phone: String,
 	articles: [],
 	apps: [],
 	backups: {
@@ -72,6 +75,8 @@ const createCompany = (companyName) => {
 	Companies.create({ 
 		name: companyName,
 		address: "",
+		emailAddr: "",
+		phone: "",
 		articles: [],
 		apps: [],
 		backup: {
@@ -189,6 +194,29 @@ const createArticle = (companyName, articleTitle, articleContent, done) => {
 	});
 };
 
+//Applications CRUD functions
+const createApp = (companyName, appObj, done) => {
+	Companies.findOne({name: companyName}, (err,company) => {
+		if (err) return console.log(err);
+		company.apps.push(appObj);
+		company.save((err, updatedCompany) => {
+			if (err) return console.log(err);
+			done(null, updatedCompany)
+		});
+	});
+};
+
+const deleteApp = (companyName, appObj, done) => {
+	Companies.findOne({name: companyName}, (err, company) => {
+		if (err) return console.log(err);
+		company.apps.pull(appObj);
+		company.save((err, updatedCompany) => {
+			if (err) return console.log(err);
+			done(null, updatedCompany)
+		});
+	});
+};
+
 //tests
 
 //updateRouter("g","192.168.0.0/24", "192.168.0.1", "ipsec", console.log);
@@ -197,13 +225,19 @@ const createArticle = (companyName, articleTitle, articleContent, done) => {
 //createCompany("test3");
 //createCompany("test4");
 //createCompany("test5");
-//getCompany("Afghan Kush",(err, data) => console.log(data));
+getCompany("fasd",(err, data) => console.log(data));
 //updateCompany("g", "address", "10.0.0.24/24",console.log);
 //createArticle("g","How to be a boss", "First thing's first, you just need to party",console.log);
 //getAllCompanies(console.log);
 //deleteCompany("29845",console.log)
+//createApp("fasd", {name: "OpenTHC", installer: "OpenTHC.com"}, console.log);
+//createApp("fasd", {name: "sage", installer: "OpenTHC.com"}, console.log);
+//createApp("fasd", {name: "metrc", installer: "OpenTHC.com"}, console.log);
+//createApp("fasd", {name: "healthwyse", installer: "OpenTHC.com"}, console.log);
+//deleteApp("fasd", {name: "OpenTHC", installer: "OpenTHC.com"}, console.log);
 
-//Express config 
+//Express config
+
 const app = express();
 
 app.use(cors());
@@ -244,6 +278,14 @@ app.post("/companies/:company/address", (req,res) => {
 	updateCompany(req.body.company, "address", req.body.address, console.log)
 });
 
+app.post("/companies/:company/email", (req,res) => {
+	updateCompany(req.body.company, "emailAddr", req.body.emailAddr, console.log)
+});
+
+app.post("/companies/:company/phone", (req,res) => {
+	updateCompany(req.body.company, "phone", req.body.phone, console.log)
+});
+
 app.post("/companies/:company/delete", (req,res) => {
 	deleteCompany(req.body.company,console.log);
 	res.send("Done");
@@ -253,5 +295,3 @@ app.post("/companies/articles/:company", (req, res) => {
 	createArticle(req.body.company,req.body.title,req.body.content,console.log);
 	res.send("Done");
 });
-
-
