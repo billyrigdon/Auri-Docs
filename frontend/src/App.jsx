@@ -11,6 +11,7 @@ class App extends React.Component {
 		super(props);
 		this.state = {
 			nav: "companies",
+			companyList: [],
 			companyName: "",
 			newCompany: "",
 			newName: "",
@@ -21,7 +22,8 @@ class App extends React.Component {
 			phone: "",
 			newPhone: "",
 			articles: [],
-			companyList: []
+			apps: [],
+			selectedApp: {}
 		};
 		this.fetchCompany = this.fetchCompany.bind(this);
 		this.updateCompany = this.updateCompany.bind(this);
@@ -37,7 +39,8 @@ class App extends React.Component {
 		this.updateCompanyEmail = this.updateCompanyEmail.bind(this);
 		this.handleEmailChange = this.handleEmailChange.bind(this);	
 		this.updateCompanyPhone = this.updateCompanyPhone.bind(this);
-		this.handlePhoneChange = this.handlePhoneChange.bind(this);	
+		this.handlePhoneChange = this.handlePhoneChange.bind(this);
+		this.selectApp = this.selectApp.bind(this);
 	};
 
 	fetchCompany() {
@@ -46,7 +49,8 @@ class App extends React.Component {
 			.then(res => this.setState({
 				address: res.address,
 				emailAddr: res.emailAddr,
-				phone: res.phone
+				phone: res.phone,
+				apps: res.apps
 			}))
 	};
 
@@ -223,11 +227,17 @@ class App extends React.Component {
 		});
 	};
 
+//Functions used by App page
+
+selectApp(event) {
+	this.setState({
+		selectedApp: event.target.value
+	});
+};
 
 
 //React Hooks
 	componentDidMount() {
-		this.fetchCompany();
 		this.fetchAllCompanies();	
 	};
 
@@ -263,6 +273,16 @@ class App extends React.Component {
 					</div>
 				</div>
 		 	)
+		} else if (this.state.nav === "applications") {
+			return (
+				<div id="app-container">
+					<Navbar changeNav={this.changeNav} />
+					<Topbar companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName}/>
+					<div id="content-container">			 		
+						<Applications selectedApp={this.state.selectedApp} selectApp={this.selectApp} apps={this.state.apps} companyName={this.state.companyName} />
+					</div>
+				</div>
+			)
 		}
 	}
 };
@@ -285,7 +305,7 @@ class Navbar extends React.Component {
 						<span className="material-icons">book</span>
 						<h5>Articles</h5>
 					</li>
-					<li className="nav-button">
+					<li className="nav-button" onClick={() => this.props.changeNav("applications")}>
 						<span className="material-icons">apps</span>
 						<h5>Apps</h5>
 					</li>
@@ -505,7 +525,7 @@ class Companies extends React.Component {
 		)
 	}
 }
-/*
+
 class Applications extends React.Component {
 	constructor(props) {
 		super(props);
@@ -513,7 +533,31 @@ class Applications extends React.Component {
 
 	render() {
 
+		const app = this.props.apps.map((item,index) => 
+			<div className="app-cards">
+				<h3 className="app-title">
+					<a data-toggle="collapse" data-target={"#app-content-"+ item.name.split(" ").join("-") + index.toString()} aria-expanded="false" aria-controls={"app-content-" + item.title + index.toString()}>
+						{item.name}<span class="material-icons">expand_more</span>
+						<button>Select</button>
+					</a>
+				</h3>
+				<div class="collapse" id={"app-content-" +item.name.split(" ").join("-") + index.toString()}>
+					<p>{item.installer}</p>
+				</div>
+			</div>	
+		)
+
+		return (
+			<div id="applications-container">
+				<h1>{this.props.companyName}</h1>
+				<div id="appList">
+					<ul>
+						{app}
+					</ul>
+				</div>
+			</div>
+		)
 	}
 }
-*/
+
 export default App;

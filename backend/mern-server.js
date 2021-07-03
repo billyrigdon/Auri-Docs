@@ -164,24 +164,6 @@ const deleteCompany = (companyName,done) => {
 	});
 };
 
-//Router CRUD functions
-const updateRouter = (companyName, subnetVal, ipAddrVal, dhcpVal, portForVal,notesVal, vpnVal, done) => {
-	Companies.findOne({name:companyName}, (err, company) => {
-		if (err) return console.log(err);
-		console.log(ipAddrVal)
-		company.router.ipAddr = ipAddrVal;
-		company.router.subnet = subnetVal;
-		company.router.dhcp = dhcpVal;
-		company.router.portForwards = portForVal;
-		company.router.notes = notesVal;
-		company.router.vpn = vpnVal;
-		company.save((err, updatedCompany) => {
-			if (err) return console.log(err);
-			done(null, updatedCompany)
-		});
-	});
-};
-
 //Article CRUD functions
 const createArticle = (companyName, articleTitle, articleContent, done) => {
 	Companies.findOne({name: companyName}, (err,company) => {
@@ -225,7 +207,7 @@ const deleteApp = (companyName, appObj, done) => {
 //createCompany("test3");
 //createCompany("test4");
 //createCompany("test5");
-getCompany("fasd",(err, data) => console.log(data));
+//getCompany("fasd",(err, data) => console.log(data));
 //updateCompany("g", "address", "10.0.0.24/24",console.log);
 //createArticle("g","How to be a boss", "First thing's first, you just need to party",console.log);
 //getAllCompanies(console.log);
@@ -294,4 +276,12 @@ app.post("/companies/:company/delete", (req,res) => {
 app.post("/companies/articles/:company", (req, res) => {
 	createArticle(req.body.company,req.body.title,req.body.content,console.log);
 	res.send("Done");
+});
+
+app.post("/companies/apps/:company/create", (req,res) => {
+	createApp(req.body.company, req.body.newApp, console.log);
+});
+
+app.post("/companies/apps/:company/delete", (req,res) => {
+	deleteApp(req.body.company, req.body.deletedApp, console.log);
 });
