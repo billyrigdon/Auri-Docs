@@ -207,7 +207,7 @@ const deleteApp = (companyName, appObj, done) => {
 //createCompany("test3");
 //createCompany("test4");
 //createCompany("test5");
-//getCompany("fasd",(err, data) => console.log(data));
+getCompany("fasd",(err, data) => console.log(data));
 //updateCompany("g", "address", "10.0.0.24/24",console.log);
 //createArticle("g","How to be a boss", "First thing's first, you just need to party",console.log);
 //getAllCompanies(console.log);
@@ -216,7 +216,7 @@ const deleteApp = (companyName, appObj, done) => {
 //createApp("fasd", {name: "sage", installer: "OpenTHC.com"}, console.log);
 //createApp("fasd", {name: "metrc", installer: "OpenTHC.com"}, console.log);
 //createApp("fasd", {name: "healthwyse", installer: "OpenTHC.com"}, console.log);
-//deleteApp("fasd", {name: "OpenTHC", installer: "OpenTHC.com"}, console.log);
+//deleteApp("fasd", {name: "sage", installer: "OpenTHC.com"}, console.log);
 
 //Express config
 
@@ -283,5 +283,5 @@ app.post("/companies/apps/:company/create", (req,res) => {
 });
 
 app.post("/companies/apps/:company/delete", (req,res) => {
-	deleteApp(req.body.company, req.body.deletedApp, console.log);
+	deleteApp(req.body.company, req.body.app, console.log);
 });

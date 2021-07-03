@@ -41,6 +41,7 @@ class App extends React.Component {
 		this.updateCompanyPhone = this.updateCompanyPhone.bind(this);
 		this.handlePhoneChange = this.handlePhoneChange.bind(this);
 		this.selectApp = this.selectApp.bind(this);
+		this.deleteApp = this.deleteApp.bind(this);
 	};
 
 	fetchCompany() {
@@ -229,10 +230,27 @@ class App extends React.Component {
 
 //Functions used by App page
 
-selectApp(event) {
+selectApp(appObj) {
 	this.setState({
-		selectedApp: event.target.value
+		selectedApp: appObj
 	});
+};
+
+deleteApp(appObj) {
+	const requestOptions = {
+		method: "POST",
+		headers: {"Content-Type": "application/json"},
+		body: JSON.stringify({company: this.state.companyName, app: appObj})
+	};
+	
+	fetch("http://127.0.0.1:1313/companies/apps/" + this.state.companyName + "/delete", requestOptions)
+		.then(res => res.json())
+		.then(this.setState({
+			selectedApp: ""
+		}))
+		.then(setTimeout(()=> {
+			this.fetchCompany();
+		},1200))
 };
 
 
@@ -279,7 +297,7 @@ selectApp(event) {
 					<Navbar changeNav={this.changeNav} />
 					<Topbar companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName}/>
 					<div id="content-container">			 		
-						<Applications selectedApp={this.state.selectedApp} selectApp={this.selectApp} apps={this.state.apps} companyName={this.state.companyName} />
+						<Applications deleteApp={this.deleteApp} selectedApp={this.state.selectedApp} selectApp={this.selectApp} apps={this.state.apps} companyName={this.state.companyName} />
 					</div>
 				</div>
 			)
@@ -537,9 +555,10 @@ class Applications extends React.Component {
 			<div className="app-cards">
 				<h3 className="app-title">
 					<a data-toggle="collapse" data-target={"#app-content-"+ item.name.split(" ").join("-") + index.toString()} aria-expanded="false" aria-controls={"app-content-" + item.title + index.toString()}>
-						{item.name}<span class="material-icons">expand_more</span>
-						<button>Select</button>
+						{item.name}
 					</a>
+					<button onClick={() => {this.props.selectApp(item)}}>Select</button>
+					<button className="btn btn-danger" onClick={() => {this.props.deleteApp(item)}}>Delete</button>
 				</h3>
 				<div class="collapse" id={"app-content-" +item.name.split(" ").join("-") + index.toString()}>
 					<p>{item.installer}</p>
@@ -550,6 +569,7 @@ class Applications extends React.Component {
 		return (
 			<div id="applications-container">
 				<h1>{this.props.companyName}</h1>
+				<h1>{this.props.selectedApp.name}</h1>
 				<div id="appList">
 					<ul>
 						{app}
