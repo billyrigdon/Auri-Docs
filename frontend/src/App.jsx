@@ -24,9 +24,9 @@ class App extends React.Component {
 			articles: [],
 			apps: [],
 			selectedApp: {},
-			updatedApp: {},
 			updatedAppName: "",
-			updatedAppInstaller: ""
+			updatedAppInstaller: "",
+			updatedAppNotes: ""
 		};
 
 		this.fetchCompany = this.fetchCompany.bind(this);
@@ -48,7 +48,9 @@ class App extends React.Component {
 		this.deleteApp = this.deleteApp.bind(this);
 		this.handleAppNameChange = this.handleAppNameChange.bind(this);
 		this.handleAppInstallerChange = this.handleAppInstallerChange.bind(this);
+		this.handleAppNotesChange = this.handleAppNotesChange.bind(this);
 		this.updateApp = this.updateApp.bind(this);
+		this.createNewApp = this.createNewApp.bind(this);
 	};
 
 	fetchCompany() {
@@ -78,9 +80,11 @@ class App extends React.Component {
 	};
 //changes the content view based on the selected nav state
 	changeNav(navValue) {
-		this.setState({
-			nav: navValue
-		});
+		if (this.state.companyName) {
+			this.setState({
+				nav: navValue
+			});
+		}
 	};
 
 //functions to handle creating/deleting companies
@@ -242,7 +246,8 @@ class App extends React.Component {
 			selectedApp: appObj,
 			updatedApp: appObj,
 			updatedAppName: appObj.name,
-			updatedAppInstaller: appObj.installer
+			updatedAppInstaller: appObj.installer,
+			updatedAppNotes: appObj.notes
 		});
 	};
 
@@ -268,7 +273,7 @@ class App extends React.Component {
 		const requestOptions = {
 			method: "POST",
 			headers: {"Content-Type": "application/json"},
-			body: JSON.stringify({company: this.state.companyName, app: this.state.selectedApp, updatedApp: {name: this.state.updatedAppName, installer: this.state.updatedAppInstaller}})
+			body: JSON.stringify({company: this.state.companyName, app: this.state.selectedApp, updatedApp: {name: this.state.updatedAppName, installer: this.state.updatedAppInstaller, notes: this.state.updatedAppNotes}})
 		};
 	
 		fetch("http://127.0.0.1:1313/companies/apps/" + this.state.companyName + "/update", requestOptions)
@@ -276,7 +281,8 @@ class App extends React.Component {
 			.then(this.setState({
 				selectedApp: "",
 				updatedAppName: "",
-				updatedAppInstaller: ""
+				updatedAppInstaller: "",
+				updatedAppNotes: ""
 			}))
 			.then(setTimeout(()=> {
 				this.fetchCompany();
@@ -288,13 +294,29 @@ class App extends React.Component {
 		this.setState({
 			updatedAppName: event.target.value
 		});
-	}
+	};
 
 	handleAppInstallerChange(event) {
 		this.setState({
 			updatedAppInstaller: event.target.value
 		});
-	}
+	};
+
+	handleAppNotesChange(event) {
+		this.setState({
+			updatedAppNotes: event.target.value
+		});
+	};
+
+	createNewApp(event) {
+		event.preventDefault();
+		this.setState({
+			selectedApp: "",
+			updatedAppName: "",
+			updatedAppInstaller: "",
+			updatedAppNotes: ""
+		});
+	};
 
 
 	
@@ -343,7 +365,7 @@ class App extends React.Component {
 					<Navbar changeNav={this.changeNav} />
 					<Topbar companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName}/>
 					<div id="content-container">			 		
-						<Applications updatedAppInstaller={this.state.updatedAppInstaller} updatedAppName={this.state.updatedAppName} handleAppInstallerChange={this.handleAppInstallerChange} updateApp={this.updateApp} updatedApp={this.state.updatedApp} handleAppNameChange={this.handleAppNameChange} deleteApp={this.deleteApp} selectedApp={this.state.selectedApp} selectApp={this.selectApp} apps={this.state.apps} companyName={this.state.companyName} />
+						<Applications createNewApp={this.createNewApp} handleAppNotesChange={this.handleAppNotesChange} updatedAppNotes={this.state.updatedAppNotes} updatedAppInstaller={this.state.updatedAppInstaller} updatedAppName={this.state.updatedAppName} handleAppInstallerChange={this.handleAppInstallerChange} updateApp={this.updateApp} handleAppNameChange={this.handleAppNameChange} deleteApp={this.deleteApp} selectedApp={this.state.selectedApp} selectApp={this.selectApp} apps={this.state.apps} companyName={this.state.companyName} />
 					</div>
 				</div>
 			)
@@ -614,12 +636,13 @@ class Applications extends React.Component {
 
 		return (
 			<div id="applications-container">
-				<h1>{this.props.companyName}</h1>
 				<h1>{this.props.selectedApp.name}</h1>
 				<form>
 					<input onChange={this.props.handleAppNameChange} value={this.props.updatedAppName} />
 					<input onChange={this.props.handleAppInstallerChange} value={this.props.updatedAppInstaller} />
-					<button onClick={this.props.updateApp} className="btn btn-primary">Update</button>
+					<input onChange={this.props.handleAppNotesChange} value={this.props.updatedAppNotes} />
+					<button onClick={this.props.updateApp} className="btn btn-primary">Save</button>
+					<button onClick={this.props.createNewApp}>Create New Company</button>
 				</form>
 				<div id="appList">
 					<ul>

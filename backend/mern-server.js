@@ -203,12 +203,15 @@ const updateApp = (companyName,oldApp,newApp,done) => {
 	Companies.findOne({name: companyName}, (err, company) => {
 		if (err) return console.log(err);
 		appIndex = company.apps.findIndex(x => x.name === oldApp.name);
-		console.log(appIndex);
-		company.apps.set(appIndex, newApp);
-		company.save((err,updatedCompany) => {
-			if (err) return console.log(err);
-			done(null,updatedCompany)
-		});
+		if (appIndex < 0) {
+			createApp(companyName,newApp,console.log);
+		} else {
+			company.apps.set(appIndex, newApp);
+			company.save((err,updatedCompany) => {
+				if (err) return console.log(err);
+				done(null,updatedCompany)
+			});
+		}
 	});
 };
 
@@ -301,10 +304,10 @@ app.post("/companies/apps/:company/update", (req,res) => {
 //createArticle("g","How to be a boss", "First thing's first, you just need to party",console.log);
 //getAllCompanies(console.log);
 //deleteCompany("29845",console.log)
-//createApp("1234", {name: "OpenTHC", installer: "OpenTHC.com"}, console.log);
-//createApp("1234", {name: "sage", installer: "OpenTHC.com"}, console.log);
-//createApp("1234", {name: "metrc", installer: "OpenTHC.com"}, console.log);
-//createApp("1234", {name: "healthwyse", installer: "OpenTHC.com"}, console.log);
+//createApp("1234", {name: "OpenTHC", installer: "OpenTHC.com", notes: "TEST NOTES"}, console.log);
+//createApp("1234", {name: "sage", installer: "OpenTHC.com", notes: "TEST NOTES"}, console.log);
+//createApp("1234", {name: "metrc", installer: "OpenTHC.com", notes: "TEST NOTES"}, console.log);
+//createApp("1234", {name: "healthwyse", installer: "OpenTHC.com", notes: "TEST NOTES"}, console.log);
 //deleteApp("fasd", {name: "sage", installer: "OpenTHC.com"}, console.log);
 //updateApp("fasd", {name: "metrc", installer: "OpenTHC.com"}, {name: "newSage", installer: "newInstaller.com"}, console.log)
 
