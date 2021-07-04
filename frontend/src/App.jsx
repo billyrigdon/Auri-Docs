@@ -251,17 +251,23 @@ class App extends React.Component {
 		});
 	};
 
-	deleteApp(appObj) {
+	deleteApp(event) {
+		event.preventDefault();
+
 		const requestOptions = {
 			method: "POST",
 			headers: {"Content-Type": "application/json"},
-			body: JSON.stringify({company: this.state.companyName, app: appObj})
+			body: JSON.stringify({company: this.state.companyName, app: this.state.selectedApp})
 		};
 	
 		fetch("http://127.0.0.1:1313/companies/apps/" + this.state.companyName + "/delete", requestOptions)
 			.then(res => res.json())
 			.then(this.setState({
-				selectedApp: ""
+				selectedApp: "",
+				updatedApp: "",
+				updatedAppName: "",
+				updatedAppInstaller: "",
+				updatedAppNotes: ""
 			}))
 			.then(setTimeout(()=> {
 				this.fetchCompany();
@@ -622,32 +628,29 @@ class Applications extends React.Component {
 		const app = this.props.apps.map((item,index) => 
 			<div className="app-cards">
 				<h3 className="app-title">
-					<a data-toggle="collapse" data-target={"#app-content-"+ item.name.split(" ").join("-") + index.toString()} aria-expanded="false" aria-controls={"app-content-" + item.title + index.toString()}>
+					<a>
 						{item.name}
-					</a>
-					<button onClick={() => {this.props.selectApp(item)}}>Select</button>
-					<button className="btn btn-danger" onClick={() => {this.props.deleteApp(item)}}>Delete</button>
+					</a>	
 				</h3>
-				<div class="collapse" id={"app-content-" +item.name.split(" ").join("-") + index.toString()}>
-					
-				</div>
+				<button onClick={() => {this.props.selectApp(item)}}>Select</button>
 			</div>	
 		)
 
 		return (
 			<div id="applications-container">
-				<h1>{this.props.selectedApp.name}</h1>
-				<form>
-					<input onChange={this.props.handleAppNameChange} value={this.props.updatedAppName} />
-					<input onChange={this.props.handleAppInstallerChange} value={this.props.updatedAppInstaller} />
-					<input onChange={this.props.handleAppNotesChange} value={this.props.updatedAppNotes} />
-					<button onClick={this.props.updateApp} className="btn btn-primary">Save</button>
-					<button onClick={this.props.createNewApp}>Create New Company</button>
+				<form id="app-info">
+					<input onChange={this.props.handleAppNameChange} value={this.props.updatedAppName} placeholder="App Name" />
+					<input onChange={this.props.handleAppInstallerChange} value={this.props.updatedAppInstaller} placeholder="Installer location" />
+					<textarea onChange={this.props.handleAppNotesChange} value={this.props.updatedAppNotes} placeholder="App Notes"/>
+					<button id="save-app-button" onClick={this.props.updateApp} className="btn btn-primary">Save</button>
+					<button className="btn btn-danger" onClick={this.props.deleteApp}>Delete</button>
+					
 				</form>
-				<div id="appList">
-					<ul>
+				<div id="app-card-container">
+					<div id="appList">
 						{app}
-					</ul>
+					</div>
+					<button id="create-app-button" onClick={this.props.createNewApp}>Create New App</button>
 				</div>
 			</div>
 		)
