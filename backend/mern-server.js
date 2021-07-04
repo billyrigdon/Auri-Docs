@@ -199,24 +199,19 @@ const deleteApp = (companyName, appObj, done) => {
 	});
 };
 
-//tests
+const updateApp = (companyName,oldApp,newApp,done) => {
+	Companies.findOne({name: companyName}, (err, company) => {
+		if (err) return console.log(err);
+		appIndex = company.apps.findIndex(x => x.name === oldApp.name);
+		console.log(appIndex);
+		company.apps.set(appIndex, newApp);
+		company.save((err,updatedCompany) => {
+			if (err) return console.log(err);
+			done(null,updatedCompany)
+		});
+	});
+};
 
-//updateRouter("g","192.168.0.0/24", "192.168.0.1", "ipsec", console.log);
-//createCompany("test1");
-//createCompany("test2");
-//createCompany("test3");
-//createCompany("test4");
-//createCompany("test5");
-//getCompany("fasd",(err, data) => console.log(data));
-//updateCompany("g", "address", "10.0.0.24/24",console.log);
-//createArticle("g","How to be a boss", "First thing's first, you just need to party",console.log);
-//getAllCompanies(console.log);
-//deleteCompany("29845",console.log)
-createApp("fasd", {name: "OpenTHC", installer: "OpenTHC.com"}, console.log);
-createApp("fasd", {name: "sage", installer: "OpenTHC.com"}, console.log);
-createApp("fasd", {name: "metrc", installer: "OpenTHC.com"}, console.log);
-createApp("fasd", {name: "healthwyse", installer: "OpenTHC.com"}, console.log);
-//deleteApp("fasd", {name: "sage", installer: "OpenTHC.com"}, console.log);
 
 //Express config
 
@@ -280,8 +275,36 @@ app.post("/companies/articles/:company", (req, res) => {
 
 app.post("/companies/apps/:company/create", (req,res) => {
 	createApp(req.body.company, req.body.newApp, console.log);
+	res.send("Done");
 });
 
 app.post("/companies/apps/:company/delete", (req,res) => {
 	deleteApp(req.body.company, req.body.app, console.log);
+	res.send("Done");
 });
+
+app.post("/companies/apps/:company/update", (req,res) => {
+	updateApp(req.body.company, req.body.app, req.body.updatedApp, console.log);
+	res.send("Done");
+});
+
+//tests
+
+//updateRouter("g","192.168.0.0/24", "192.168.0.1", "ipsec", console.log);
+//createCompany("test1");
+//createCompany("test2");
+//createCompany("test3");
+//createCompany("test4");
+//createCompany("test5");
+//getCompany("fasd",(err, data) => console.log(data));
+//updateCompany("g", "address", "10.0.0.24/24",console.log);
+//createArticle("g","How to be a boss", "First thing's first, you just need to party",console.log);
+//getAllCompanies(console.log);
+//deleteCompany("29845",console.log)
+//createApp("fasd", {name: "OpenTHC", installer: "OpenTHC.com"}, console.log);
+//createApp("fasd", {name: "sage", installer: "OpenTHC.com"}, console.log);
+//createApp("fasd", {name: "metrc", installer: "OpenTHC.com"}, console.log);
+//createApp("fasd", {name: "healthwyse", installer: "OpenTHC.com"}, console.log);
+//deleteApp("fasd", {name: "sage", installer: "OpenTHC.com"}, console.log);
+//updateApp("fasd", {name: "metrc", installer: "OpenTHC.com"}, {name: "newSage", installer: "newInstaller.com"}, console.log)
+
