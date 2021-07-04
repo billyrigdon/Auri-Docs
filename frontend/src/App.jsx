@@ -23,8 +23,12 @@ class App extends React.Component {
 			newPhone: "",
 			articles: [],
 			apps: [],
-			selectedApp: {}
+			selectedApp: {},
+			updatedApp: {},
+			updatedAppName: "",
+			updatedAppInstaller: ""
 		};
+
 		this.fetchCompany = this.fetchCompany.bind(this);
 		this.updateCompany = this.updateCompany.bind(this);
 		this.changeNav = this.changeNav.bind(this);
@@ -42,6 +46,9 @@ class App extends React.Component {
 		this.handlePhoneChange = this.handlePhoneChange.bind(this);
 		this.selectApp = this.selectApp.bind(this);
 		this.deleteApp = this.deleteApp.bind(this);
+		this.handleAppNameChange = this.handleAppNameChange.bind(this);
+		this.handleAppInstallerChange = this.handleAppInstallerChange.bind(this);
+		this.updateApp = this.updateApp.bind(this);
 	};
 
 	fetchCompany() {
@@ -230,28 +237,67 @@ class App extends React.Component {
 
 //Functions used by App page
 
-selectApp(appObj) {
-	this.setState({
-		selectedApp: appObj
-	});
-};
-
-deleteApp(appObj) {
-	const requestOptions = {
-		method: "POST",
-		headers: {"Content-Type": "application/json"},
-		body: JSON.stringify({company: this.state.companyName, app: appObj})
+	selectApp(appObj) {
+		this.setState({
+			selectedApp: appObj,
+			updatedApp: appObj,
+			updatedAppName: appObj.name,
+			updatedAppInstaller: appObj.installer
+		});
 	};
+
+	deleteApp(appObj) {
+		const requestOptions = {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({company: this.state.companyName, app: appObj})
+		};
 	
-	fetch("http://127.0.0.1:1313/companies/apps/" + this.state.companyName + "/delete", requestOptions)
-		.then(res => res.json())
-		.then(this.setState({
-			selectedApp: ""
-		}))
-		.then(setTimeout(()=> {
-			this.fetchCompany();
-		},1200))
-};
+		fetch("http://127.0.0.1:1313/companies/apps/" + this.state.companyName + "/delete", requestOptions)
+			.then(res => res.json())
+			.then(this.setState({
+				selectedApp: ""
+			}))
+			.then(setTimeout(()=> {
+				this.fetchCompany();
+			},1200))
+	};
+
+	updateApp(event) {
+		event.preventDefault();
+		const requestOptions = {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({company: this.state.companyName, app: this.state.selectedApp, updatedApp: {name: this.state.updatedAppName, installer: this.state.updatedAppInstaller}})
+		};
+	
+		fetch("http://127.0.0.1:1313/companies/apps/" + this.state.companyName + "/update", requestOptions)
+			.then(res => res.json())
+			.then(this.setState({
+				selectedApp: "",
+				updatedAppName: "",
+				updatedAppInstaller: ""
+			}))
+			.then(setTimeout(()=> {
+				this.fetchCompany();
+			},1200))
+			
+	};
+
+	handleAppNameChange(event) {
+		this.setState({
+			updatedAppName: event.target.value
+		});
+	}
+
+	handleAppInstallerChange(event) {
+		this.setState({
+			updatedAppInstaller: event.target.value
+		});
+	}
+
+
+	
 
 
 //React Hooks
@@ -297,7 +343,7 @@ deleteApp(appObj) {
 					<Navbar changeNav={this.changeNav} />
 					<Topbar companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName}/>
 					<div id="content-container">			 		
-						<Applications deleteApp={this.deleteApp} selectedApp={this.state.selectedApp} selectApp={this.selectApp} apps={this.state.apps} companyName={this.state.companyName} />
+						<Applications updatedAppInstaller={this.state.updatedAppInstaller} updatedAppName={this.state.updatedAppName} handleAppInstallerChange={this.handleAppInstallerChange} updateApp={this.updateApp} updatedApp={this.state.updatedApp} handleAppNameChange={this.handleAppNameChange} deleteApp={this.deleteApp} selectedApp={this.state.selectedApp} selectApp={this.selectApp} apps={this.state.apps} companyName={this.state.companyName} />
 					</div>
 				</div>
 			)
@@ -561,7 +607,7 @@ class Applications extends React.Component {
 					<button className="btn btn-danger" onClick={() => {this.props.deleteApp(item)}}>Delete</button>
 				</h3>
 				<div class="collapse" id={"app-content-" +item.name.split(" ").join("-") + index.toString()}>
-					<p>{item.installer}</p>
+					
 				</div>
 			</div>	
 		)
@@ -570,6 +616,11 @@ class Applications extends React.Component {
 			<div id="applications-container">
 				<h1>{this.props.companyName}</h1>
 				<h1>{this.props.selectedApp.name}</h1>
+				<form>
+					<input onChange={this.props.handleAppNameChange} value={this.props.updatedAppName} />
+					<input onChange={this.props.handleAppInstallerChange} value={this.props.updatedAppInstaller} />
+					<button onClick={this.props.updateApp} className="btn btn-primary">Update</button>
+				</form>
 				<div id="appList">
 					<ul>
 						{app}

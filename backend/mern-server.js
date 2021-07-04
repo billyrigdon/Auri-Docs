@@ -301,10 +301,10 @@ app.post("/companies/apps/:company/update", (req,res) => {
 //createArticle("g","How to be a boss", "First thing's first, you just need to party",console.log);
 //getAllCompanies(console.log);
 //deleteCompany("29845",console.log)
-//createApp("fasd", {name: "OpenTHC", installer: "OpenTHC.com"}, console.log);
-//createApp("fasd", {name: "sage", installer: "OpenTHC.com"}, console.log);
-//createApp("fasd", {name: "metrc", installer: "OpenTHC.com"}, console.log);
-//createApp("fasd", {name: "healthwyse", installer: "OpenTHC.com"}, console.log);
+//createApp("1234", {name: "OpenTHC", installer: "OpenTHC.com"}, console.log);
+//createApp("1234", {name: "sage", installer: "OpenTHC.com"}, console.log);
+//createApp("1234", {name: "metrc", installer: "OpenTHC.com"}, console.log);
+//createApp("1234", {name: "healthwyse", installer: "OpenTHC.com"}, console.log);
 //deleteApp("fasd", {name: "sage", installer: "OpenTHC.com"}, console.log);
 //updateApp("fasd", {name: "metrc", installer: "OpenTHC.com"}, {name: "newSage", installer: "newInstaller.com"}, console.log)
 
