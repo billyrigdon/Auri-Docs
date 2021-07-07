@@ -20,9 +20,16 @@ const companySchema = new mongoose.Schema({
 	articles: [],
 	apps: [],
 	backups: {
-		technology: String,
-		window: String,
-		frequency: String
+		offsiteTechnology: String,
+		offsiteWindow: String,
+		offsiteFrequency: String,
+		offsiteDescription: String,
+		offsiteLocation: String,
+		localTechnology: String,
+		localWindow: String,
+		localFrequency: String,
+		localDescription: String,
+		localLocation: String
 	},
 	email: {
 		platform: String,
@@ -79,10 +86,17 @@ const createCompany = (companyName) => {
 		phone: "",
 		articles: [],
 		apps: [],
-		backup: {
-			technology: "",
-			window: "",
-			frequency: ""
+		backups: {
+			offsiteTechnology: "",
+			offsiteWindow: "",
+			offsiteFrequency: "",
+			offsiteDescription: "",
+			offsiteLocation: "",
+			localTechnology: "",
+			localWindow: "",
+			localFrequency: "",
+			localDescription: "",
+			localLocation: ""
 		},
 		email: {
 			platform: "",
@@ -216,6 +230,7 @@ const updateApp = (companyName,oldApp,newApp,done) => {
 };
 
 
+
 //Express config
 
 const app = express();
@@ -255,15 +270,18 @@ app.post("/companies/:company/name", (req,res) => {
 });
 
 app.post("/companies/:company/address", (req,res) => {
-	updateCompany(req.body.company, "address", req.body.address, console.log)
+	updateCompany(req.body.company, "address", req.body.address, console.log);
+	res.send("Done");
 });
 
 app.post("/companies/:company/email", (req,res) => {
-	updateCompany(req.body.company, "emailAddr", req.body.emailAddr, console.log)
+	updateCompany(req.body.company, "emailAddr", req.body.emailAddr, console.log);
+	res.send("Done");
 });
 
 app.post("/companies/:company/phone", (req,res) => {
-	updateCompany(req.body.company, "phone", req.body.phone, console.log)
+	updateCompany(req.body.company, "phone", req.body.phone, console.log);
+	res.send("Done");
 });
 
 app.post("/companies/:company/delete", (req,res) => {
@@ -288,6 +306,11 @@ app.post("/companies/apps/:company/delete", (req,res) => {
 
 app.post("/companies/apps/:company/update", (req,res) => {
 	updateApp(req.body.company, req.body.app, req.body.updatedApp, console.log);
+	res.send("Done");
+});
+
+app.post("/companies/backups/:company/update", (req,res) => {
+	updateCompany(req.body.company, "backups", req.body.backups, console.log);
 	res.send("Done");
 });
 

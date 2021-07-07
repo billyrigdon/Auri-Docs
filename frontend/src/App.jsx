@@ -26,7 +26,31 @@ class App extends React.Component {
 			selectedApp: {},
 			updatedAppName: "",
 			updatedAppInstaller: "",
-			updatedAppNotes: ""
+			updatedAppNotes: "",
+			backups: {
+				offsiteTechnology: "",
+				offsiteWindow: "",
+				offsiteFrequency: "",
+				offsiteDescription: "",
+				offsiteLocation: "",
+				localTechnology: "",
+				localWindow: "",
+				localFrequency: "",
+				localDescription: "",
+				localLocation: ""
+			},
+			updatedBackups: {
+				offsiteTechnology: "",
+				offsiteWindow: "",
+				offsiteFrequency: "",
+				offsiteDescription: "",
+				offsiteLocation: "",
+				localTechnology: "",
+				localWindow: "",
+				localFrequency: "",
+				localDescription: "",
+				localLocation: ""
+			}
 		};
 
 		this.fetchCompany = this.fetchCompany.bind(this);
@@ -60,7 +84,8 @@ class App extends React.Component {
 				address: res.address,
 				emailAddr: res.emailAddr,
 				phone: res.phone,
-				apps: res.apps
+				apps: res.apps,
+				backups: res.backups
 			}))
 	};
 
@@ -324,9 +349,98 @@ class App extends React.Component {
 		});
 	};
 
+//Functions used by Backup page
 
+	updateBackup(event) {
+		if (this.state.companyName) {
+			if (event.target.value !== "") {
+				event.preventDefault();
+
+				const requestOptions = {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify({company: this.state.companyName, backups: this.state.backups})
+				};
+				
+				fetch("http://127.0.0.1:1313/backups/" + this.state.companyName + "/update", requestOptions)
+					.then(res => res.json())
+					.then(this.setState({
+						updatedBackups: {
+							offsiteTechnology: "",
+							offsiteWindow: "",
+							offsiteFrequency: "",
+							offsiteDescription: "",
+							offsiteLocation: "",
+							localTechnology: "",
+							localWindow: "",
+							localFrequency: "",
+							localDescription: "",
+							localLocation: ""
+						}
+					}));
+			}
+		}
+	};
+
+	handleBackupOTChange(event) {
+		this.setState({
+			updatedBackups: {offsiteTechnology: event.target.value}
+		});
+	};
+
+	handleBackupOWChange(event) {
+		this.setState({
+			updatedBackups: {offsiteWindow: event.target.value}
+		});
+	};
+
+	handleBackupOFChange(event) {
+		this.setState({
+			updatedBackups: {offsiteFrequency: event.target.value}
+		});
+	};
+
+	handleBackupODChange(event) {
+		this.setState({
+			updatedBackups: {offsiteDescription: event.target.value}
+		});
+	};
+
+	handleBackupOLChange(event) {
+		this.setState({
+			updatedBackups: {offsiteLocation: event.target.value}
+		});
+	};
+
+	handleBackupLTChange(event) {
+		this.setState({
+			updatedBackups: {localTechnology: event.target.value}
+		});
+	};
 	
+	handleBackupLWChange(event) {
+		this.setState({
+			updatedBackups: {localWindow: event.target.value}
+		});
+	};
 
+	handleBackupLFChange(event) {
+		this.setState({
+			updatedBackups: {localFrequency: event.target.value}
+		});
+	};
+
+	handleBackupLDChange(event) {
+		this.setState({
+			updatedBackups: {localDescription: event.target.value}
+		});
+	};
+
+	handleBackupLLChange(event) {
+		this.setState({
+			updatedBackups: {localLocation: event.target.value}
+		});
+	};
 
 //React Hooks
 	componentDidMount() {
@@ -652,6 +766,20 @@ class Applications extends React.Component {
 					</div>
 					<button id="create-app-button" onClick={this.props.createNewApp}>Create New App</button>
 				</div>
+			</div>
+		)
+	}
+}
+
+class Backups extends React.Component {
+	constructor(props){
+		super(props);
+	};
+
+	render() {
+		return (
+			<div id="backup-container">
+				<h1>test</h1>
 			</div>
 		)
 	}
