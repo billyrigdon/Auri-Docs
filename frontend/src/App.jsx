@@ -39,18 +39,16 @@ class App extends React.Component {
 				localDescription: "",
 				localLocation: ""
 			},
-			updatedBackups: {
-				offsiteTechnology: "",
-				offsiteWindow: "",
-				offsiteFrequency: "",
-				offsiteDescription: "",
-				offsiteLocation: "",
-				localTechnology: "",
-				localWindow: "",
-				localFrequency: "",
-				localDescription: "",
-				localLocation: ""
-			}
+			newOffsiteTechnology: "",
+			newOffsiteWindow: "",
+			newOffsiteFrequency: "",
+			newOffsiteDescription: "",
+			newOffsiteLocation: "",
+			newLocalTechnology: "",
+			newLocalWindow: "",
+			newLocalFrequency: "",
+			newLocalDescription: "",
+			newLocalLocation: "",
 		};
 
 		this.fetchCompany = this.fetchCompany.bind(this);
@@ -75,6 +73,17 @@ class App extends React.Component {
 		this.handleAppNotesChange = this.handleAppNotesChange.bind(this);
 		this.updateApp = this.updateApp.bind(this);
 		this.createNewApp = this.createNewApp.bind(this);
+		this.handleBackupOTChange = this.handleBackupOTChange.bind(this);
+		this.handleBackupODChange = this.handleBackupODChange.bind(this);
+		this.handleBackupOFChange = this.handleBackupOFChange.bind(this);
+		this.handleBackupOLChange = this.handleBackupOLChange.bind(this);
+		this.handleBackupOWChange = this.handleBackupOWChange.bind(this);
+		this.handleBackupLDChange = this.handleBackupLDChange.bind(this);
+		this.handleBackupLFChange = this.handleBackupLFChange.bind(this);
+		this.handleBackupLLChange = this.handleBackupLLChange.bind(this);
+		this.handleBackupLTChange = this.handleBackupLTChange.bind(this);
+		this.handleBackupLWChange = this.handleBackupLWChange.bind(this);
+		this.updateBackup = this.updateBackup.bind(this);
 	};
 
 	fetchCompany() {
@@ -351,94 +360,104 @@ class App extends React.Component {
 
 //Functions used by Backup page
 
-	updateBackup(event) {
-		if (this.state.companyName) {
-			if (event.target.value !== "") {
-				event.preventDefault();
+	updateBackup(event) {		
+		event.preventDefault();
 
-				const requestOptions = {
-					method: "POST",
-					headers: {"Content-Type": "application/json"},
-					body: JSON.stringify({company: this.state.companyName, backups: this.state.backups})
-				};
-				
-				fetch("http://127.0.0.1:1313/backups/" + this.state.companyName + "/update", requestOptions)
-					.then(res => res.json())
-					.then(this.setState({
-						updatedBackups: {
-							offsiteTechnology: "",
-							offsiteWindow: "",
-							offsiteFrequency: "",
-							offsiteDescription: "",
-							offsiteLocation: "",
-							localTechnology: "",
-							localWindow: "",
-							localFrequency: "",
-							localDescription: "",
-							localLocation: ""
-						}
-					}));
-			}
-		}
+		const requestOptions = {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({company: this.state.companyName, backups: {
+				offsiteTechnology: this.state.newOffsiteTechnology,
+				offsiteWindow: this.state.newOffsiteWindow,
+				offsiteDescription: this.state.newOffsiteDescription,
+				offsiteLocation: this.state.newOffsiteLocation,
+				offsiteFrequency: this.state.newOffsiteFrequency,
+				localTechnology: this.state.newLocalTechnology,
+				localWindow: this.state.newLocalWindow,
+				localDescription: this.state.newLocalDescription,
+				localLocation: this.state.newLocalLocation,
+				localFrequency: this.state.newLocalDescription
+			}}
+		)
+		};
+		
+		fetch("http://127.0.0.1:1313/companies/backups/" + this.state.companyName + "/update", requestOptions)
+			.then(res => res.json())
+			.then(this.setState({
+				newOffsiteTechnology: "",
+				newOffsiteWindow: "",
+				newOffsiteFrequency: "",
+				newOffsiteDescription: "",
+				newOffsiteLocation: "",
+				newLocalTechnology: "",
+				newLocalWindow: "",
+				newLocalFrequency: "",
+				newLocalDescription: "",
+				newLocalLocation: ""
+			}))
+			.then(setTimeout(()=> {
+				this.fetchCompany();
+			},1200))
 	};
 
 	handleBackupOTChange(event) {
 		this.setState({
-			updatedBackups: {offsiteTechnology: event.target.value}
+			newOffsiteTechnology: event.target.value
 		});
 	};
 
+	
 	handleBackupOWChange(event) {
 		this.setState({
-			updatedBackups: {offsiteWindow: event.target.value}
+			newOffsiteWindow: event.target.value
 		});
 	};
 
 	handleBackupOFChange(event) {
 		this.setState({
-			updatedBackups: {offsiteFrequency: event.target.value}
+			newOffsiteFrequency: event.target.value
 		});
 	};
 
 	handleBackupODChange(event) {
 		this.setState({
-			updatedBackups: {offsiteDescription: event.target.value}
+			newOffsiteDescription: event.target.value
 		});
 	};
 
 	handleBackupOLChange(event) {
 		this.setState({
-			updatedBackups: {offsiteLocation: event.target.value}
+			newOffsiteLocation: event.target.value
 		});
 	};
 
 	handleBackupLTChange(event) {
 		this.setState({
-			updatedBackups: {localTechnology: event.target.value}
+			newLocalTechnology: event.target.value
 		});
 	};
 	
 	handleBackupLWChange(event) {
 		this.setState({
-			updatedBackups: {localWindow: event.target.value}
+			newLocalWindow: event.target.value
 		});
 	};
 
 	handleBackupLFChange(event) {
 		this.setState({
-			updatedBackups: {localFrequency: event.target.value}
+			newLocalFrequency: event.target.value
 		});
 	};
 
 	handleBackupLDChange(event) {
 		this.setState({
-			updatedBackups: {localDescription: event.target.value}
+			newLocalDescription: event.target.value
 		});
 	};
 
 	handleBackupLLChange(event) {
 		this.setState({
-			updatedBackups: {localLocation: event.target.value}
+			newLocalLocation: event.target.value
 		});
 	};
 
@@ -496,7 +515,7 @@ class App extends React.Component {
 					<Navbar changeNav={this.changeNav} />
 					<Topbar companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName}/>
 					<div id="content-container">			 		
-						<Backups {...this.state} />	
+						<Backups {...this.state} updateBackup={this.updateBackup} handleBackupOWChange={this.handleBackupOWChange} handleBackupOLChange={this.handleBackupOLChange} handleBackupOFChange={this.handleBackupOFChange} handleBackupODChange={this.handleBackupODChange} handleBackupOTChange={this.handleBackupOTChange} handleBackupLWChange={this.handleBackupLWChange} handleBackupLTChange={this.handleBackupLTChange} handleBackupLLChange={this.handleBackupLLChange} handleBackupLFChange={this.handleBackupLFChange} handleBackupLDChange={this.handleBackupLDChange}/>	
 					</div>
 				</div>
 			)
@@ -790,10 +809,21 @@ class Backups extends React.Component {
 	render() {
 		return (
 			<div id="backup-container">
-				<h1>test</h1>
+				<form id="backup-info">
+					<input onChange={this.props.handleBackupOTChange} value={this.props.newOffsiteTechnology} placeholder={this.props.backups.offsiteTechnology} />
+					<input onChange={this.props.handleBackupOFChange} value={this.props.newOffsiteFrequency} placeholder={this.props.backups.offsiteFrequency} />
+					<textarea onChange={this.props.handleBackupODChange} value={this.props.newOffsiteDescription} placeholder={this.props.backups.offsiteDescription}/>
+					<button id="save-app-button" onClick={this.props.updateBackup} className="btn btn-primary">Save</button>	
+				</form>
 			</div>
 		)
 	}
 }
 
 export default App;
+
+/*
+<input onChange={this.props.handleBackupOFChange} value={this.props.updatedBackups.offsiteFrequency} placeholder={this.props.updatedBackups.offsiteFrequency} />
+<textarea onChange={this.props.handleBackupODChange} value={this.props.updatedBackups.offsiteDescription} placeholder={this.props.updatedBackups.offsiteDescription}/>
+<button id="save-app-button" onClick={this.props.updateBackup} className="btn btn-primary">Save</button>
+*/
