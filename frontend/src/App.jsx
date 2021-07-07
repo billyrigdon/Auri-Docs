@@ -489,6 +489,17 @@ class App extends React.Component {
 					</div>
 				</div>
 			)
+		} else if (this.state.nav === "backups") {
+			
+			return (
+				<div id="app-container">
+					<Navbar changeNav={this.changeNav} />
+					<Topbar companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName}/>
+					<div id="content-container">			 		
+						<Backups {...this.state} />	
+					</div>
+				</div>
+			)
 		}
 	}
 };
@@ -515,7 +526,7 @@ class Navbar extends React.Component {
 						<span className="material-icons">apps</span>
 						<h5>Apps</h5>
 					</li>
-					<li className="nav-button">
+					<li className="nav-button" onClick={() => this.props.changeNav("backups")}>
 						<span className="material-icons">cloud_upload</span>
 						<h5>Backup</h5>
 					</li>
