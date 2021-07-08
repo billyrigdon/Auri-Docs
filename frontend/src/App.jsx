@@ -819,24 +819,30 @@ class Backups extends React.Component {
 	render() {
 		return (
 			<div id="backup-container">
-				<form id="offsite-backup-info">
-					<input onChange={this.props.handleBackupOTChange} value={this.props.newOffsiteTechnology} placeholder={this.props.backups.offsiteTechnology} />
-					<input onChange={this.props.handleBackupOFChange} value={this.props.newOffsiteFrequency} placeholder={this.props.backups.offsiteFrequency} />
-					<textarea onChange={this.props.handleBackupODChange} value={this.props.newOffsiteDescription} placeholder={this.props.backups.offsiteDescription}/>
-					<input onChange={this.props.handleBackupOLChange} value={this.props.newOffsiteLocation} placeholder={this.props.backups.offsiteDescription} />
-					<input onChange={this.props.handleBackupOWChange} value={this.props.newOffsiteWindow} />
-					<button id="save-app-button" onClick={this.props.updateBackup} className="btn btn-primary">Save</button>	
-				</form>
 
-				<form id="local-backup-info">
-					<input onChange={this.props.handleBackupLTChange} value={this.props.newLocalTechnology} placeholder={this.props.backups.localTechnology} />
-					<input onChange={this.props.handleBackupLFChange} value={this.props.newLocalFrequency} placeholder={this.props.backups.localFrequency} />
-					<textarea onChange={this.props.handleBackupLDChange} value={this.props.newLocalDescription} placeholder={this.props.backups.localDescription}/>
-					<input onChange={this.props.handleBackupLLChange} value={this.props.newLocalLocation} placeholder={this.props.backups.localDescription} />
-					<input onChange={this.props.handleBackupLWChange} value={this.props.newLocalWindow} />
-					<button id="save-app-button" onClick={this.props.updateBackup} className="btn btn-primary">Save</button>	
-				</form>
-
+				<div id="backup-info-container">
+					<div className="backup-card">
+						<form className="backup-form">
+							<h2>Offsite</h2>
+							<input onChange={this.props.handleBackupOTChange} value={this.props.newOffsiteTechnology} placeholder={this.props.backups.offsiteTechnology} />
+							<input onChange={this.props.handleBackupOFChange} value={this.props.newOffsiteFrequency} placeholder={this.props.backups.offsiteFrequency} />
+							<input onChange={this.props.handleBackupOLChange} value={this.props.newOffsiteLocation} placeholder={this.props.backups.offsiteDescription} />
+							<input onChange={this.props.handleBackupOWChange} value={this.props.newOffsiteWindow} />
+							<textarea onChange={this.props.handleBackupODChange} value={this.props.newOffsiteDescription} placeholder={this.props.backups.offsiteDescription}/>
+						</form>
+					</div>
+					<div className="backup-card">
+						<form className="backup-form">
+							<h2>Local</h2>
+							<input onChange={this.props.handleBackupLTChange} value={this.props.newLocalTechnology} placeholder={this.props.backups.localTechnology} />
+							<input onChange={this.props.handleBackupLFChange} value={this.props.newLocalFrequency} placeholder={this.props.backups.localFrequency} />
+							<input onChange={this.props.handleBackupLLChange} value={this.props.newLocalLocation} placeholder={this.props.backups.localDescription} />
+							<input onChange={this.props.handleBackupLWChange} value={this.props.newLocalWindow} />	
+							<textarea onChange={this.props.handleBackupLDChange} value={this.props.newLocalDescription} placeholder={this.props.backups.localDescription}/>
+						</form>
+					</div>
+				</div>
+				<button id="save-backup-button" onClick={this.props.updateBackup} className="btn btn-primary">Save</button>
 			</div>
 		)
 	}
