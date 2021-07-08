@@ -94,7 +94,17 @@ class App extends React.Component {
 				emailAddr: res.emailAddr,
 				phone: res.phone,
 				apps: res.apps,
-				backups: res.backups
+				backups: res.backups,
+				newOffsiteTechnology: res.backups.offsiteTechnology,
+				newOffsiteWindow: res.backups.offsiteWindow,
+				newOffsiteFrequency: res.backups.offsiteFrequency,
+				newOffsiteDescription: res.backups.offsiteDescription,
+				newOffsiteLocation: res.backups.offsiteLocation,
+				newLocalTechnology: res.backups.localTechnology,
+				newLocalWindow: res.backups.localWindow,
+				newLocalFrequency: res.backups.localFrequency,
+				newLocalDescription: res.backups.localDescription,
+				newLocalLocation: res.backups.localLocation
 			}))
 	};
 
@@ -809,12 +819,24 @@ class Backups extends React.Component {
 	render() {
 		return (
 			<div id="backup-container">
-				<form id="backup-info">
+				<form id="offsite-backup-info">
 					<input onChange={this.props.handleBackupOTChange} value={this.props.newOffsiteTechnology} placeholder={this.props.backups.offsiteTechnology} />
 					<input onChange={this.props.handleBackupOFChange} value={this.props.newOffsiteFrequency} placeholder={this.props.backups.offsiteFrequency} />
 					<textarea onChange={this.props.handleBackupODChange} value={this.props.newOffsiteDescription} placeholder={this.props.backups.offsiteDescription}/>
+					<input onChange={this.props.handleBackupOLChange} value={this.props.newOffsiteLocation} placeholder={this.props.backups.offsiteDescription} />
+					<input onChange={this.props.handleBackupOWChange} value={this.props.newOffsiteWindow} />
 					<button id="save-app-button" onClick={this.props.updateBackup} className="btn btn-primary">Save</button>	
 				</form>
+
+				<form id="local-backup-info">
+					<input onChange={this.props.handleBackupLTChange} value={this.props.newLocalTechnology} placeholder={this.props.backups.localTechnology} />
+					<input onChange={this.props.handleBackupLFChange} value={this.props.newLocalFrequency} placeholder={this.props.backups.localFrequency} />
+					<textarea onChange={this.props.handleBackupLDChange} value={this.props.newLocalDescription} placeholder={this.props.backups.localDescription}/>
+					<input onChange={this.props.handleBackupLLChange} value={this.props.newLocalLocation} placeholder={this.props.backups.localDescription} />
+					<input onChange={this.props.handleBackupLWChange} value={this.props.newLocalWindow} />
+					<button id="save-app-button" onClick={this.props.updateBackup} className="btn btn-primary">Save</button>	
+				</form>
+
 			</div>
 		)
 	}
@@ -822,8 +844,3 @@ class Backups extends React.Component {
 
 export default App;
 
-/*
-<input onChange={this.props.handleBackupOFChange} value={this.props.updatedBackups.offsiteFrequency} placeholder={this.props.updatedBackups.offsiteFrequency} />
-<textarea onChange={this.props.handleBackupODChange} value={this.props.updatedBackups.offsiteDescription} placeholder={this.props.updatedBackups.offsiteDescription}/>
-<button id="save-app-button" onClick={this.props.updateBackup} className="btn btn-primary">Save</button>
-*/
