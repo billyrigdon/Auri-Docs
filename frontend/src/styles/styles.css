@@ -446,9 +446,20 @@ p {
 	position:relative;
 	justify-content: space-between;
 	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
-	padding:5rem;
+	padding:1rem;
 	margin:1rem 1rem 1rem 1rem;
 	background-color: #ffffff;
+}
+.backup-card h2 {
+	font-size: 3rem;
+	font-weight: 800;
+}
+
+.backup-card label {
+	font-weight: 600;
+	text-align: left;
+	width:90%;
+	font-size: .7rem;
 }
 
 .backup-form {
@@ -485,4 +496,10 @@ p {
 	color:white;
 	width:50%;
 
+}
+
+.backup-fields {
+	display:flex;
+	align-items:center;
+	justify-content: space-between;
 }

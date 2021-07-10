@@ -264,6 +264,14 @@ app.post("/companies/create", (req,res) => {
 	res.send("Done");
 })
 
+app.post("/companies/:company/info", (req,res) => {
+	updateCompany(req.body.company, "name", req.body.newName,console.log);
+	updateCompany(req.body.company, "address", req.body.address,console.log);
+	updateCompany(req.body.company, "emailAddr", req.body.emailAddr,console.log);
+	updateCompany(req.body.company, "phone", req.body.phone,console.log);
+	res.send("Done");
+});
+
 app.post("/companies/:company/name", (req,res) => {
 	updateCompany(req.body.company,"name",req.body.newName,console.log);
 	res.send("Done");

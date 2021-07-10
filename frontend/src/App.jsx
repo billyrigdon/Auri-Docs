@@ -84,6 +84,7 @@ class App extends React.Component {
 		this.handleBackupLTChange = this.handleBackupLTChange.bind(this);
 		this.handleBackupLWChange = this.handleBackupLWChange.bind(this);
 		this.updateBackup = this.updateBackup.bind(this);
+		this.updateCompanyInfo = this.updateCompanyInfo.bind(this);
 	};
 
 	fetchCompany() {
@@ -201,7 +202,33 @@ class App extends React.Component {
 		});
 	};
 
-//Functions to update company information 
+//Functions to update company information
+
+	updateCompanyInfo(event) {
+		if (this.state.companyName) {
+			event.preventDefault();	
+			
+			const requestOptions = {
+				method: "POST",
+				headers: {"Content-Type": "application/json"},
+				body: JSON.stringify({company: this.state.companyName, address: this.state.newAddress, phone: this.state.newPhone, emailAddr: this.state.newEmailAddr})
+			};
+		
+			fetch("http://127.0.0.1:1313/companies/" + this.state.companyName + "/info", requestOptions)
+				.then(res => res.json())
+				.then(this.setState({
+					address: this.state.newAddress,
+					newAddress: "",
+					phone: this.state.newPhone,
+					newPhone: "",
+					emailAddr: this.state.newEmailAddr,
+					newEmailAddr: "",
+					companyName: this.state.newName,
+					newName: ""
+				}));
+		}
+	};
+
 	updateCompanyAddress(event) {
 		if (this.state.companyName) {
 			if (event.target.value !== "") {
@@ -494,7 +521,7 @@ class App extends React.Component {
 					<Topbar  companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName}/>
 					<h1>{this.state.counter}</h1>
 					<div id="content-container">
-						<Companies handlePhoneChange={this.handlePhoneChange} updateCompanyPhone={this.updateCompanyPhone} newEmailAddr={this.state.newEmailAddr} emailAddr={this.state.emailAddr} newPhone={this.state.newPhone} phone={this.state.phone} handleEmailChange={this.handleEmailChange} updateCompanyEmail={this.updateCompanyEmail} handleAddressChange={this.handleAddressChange} updateCompanyAddress={this.updateCompanyAddress} address={this.state.address} newAddress={this.state.newAddress} newCompany={this.state.newCompany} handleNewCompanyChange={this.handleNewCompanyChange} createCompany={this.createCompany} deleteCompany={this.deleteCompany} handleNameChange={this.handleNameChange} newName={this.state.newName} updateCompanyName={this.updateCompanyName} companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName} />
+						<Companies updateCompanyInfo={this.updateCompanyInfo} handlePhoneChange={this.handlePhoneChange} updateCompanyPhone={this.updateCompanyPhone} newEmailAddr={this.state.newEmailAddr} emailAddr={this.state.emailAddr} newPhone={this.state.newPhone} phone={this.state.phone} handleEmailChange={this.handleEmailChange} updateCompanyEmail={this.updateCompanyEmail} handleAddressChange={this.handleAddressChange} updateCompanyAddress={this.updateCompanyAddress} address={this.state.address} newAddress={this.state.newAddress} newCompany={this.state.newCompany} handleNewCompanyChange={this.handleNewCompanyChange} createCompany={this.createCompany} deleteCompany={this.deleteCompany} handleNameChange={this.handleNameChange} newName={this.state.newName} updateCompanyName={this.updateCompanyName} companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} updateCompany={this.updateCompany} companyName={this.state.companyName} />
 					</div>
 				</div>
 		 	)
@@ -824,20 +851,30 @@ class Backups extends React.Component {
 					<div className="backup-card">
 						<form className="backup-form">
 							<h2>Offsite</h2>
+							<label htmlFor="technology">Technology </label>
 							<input onChange={this.props.handleBackupOTChange} value={this.props.newOffsiteTechnology} placeholder={this.props.backups.offsiteTechnology} />
+							<label htmlFor="frequency">Frequency</label>
 							<input onChange={this.props.handleBackupOFChange} value={this.props.newOffsiteFrequency} placeholder={this.props.backups.offsiteFrequency} />
+							<label htmlFor="Location">Location</label>
 							<input onChange={this.props.handleBackupOLChange} value={this.props.newOffsiteLocation} placeholder={this.props.backups.offsiteDescription} />
+							<label htmlFor="Window">Window</label>
 							<input onChange={this.props.handleBackupOWChange} value={this.props.newOffsiteWindow} />
+							<label htmlFor="description">Description</label>
 							<textarea onChange={this.props.handleBackupODChange} value={this.props.newOffsiteDescription} placeholder={this.props.backups.offsiteDescription}/>
 						</form>
 					</div>
 					<div className="backup-card">
 						<form className="backup-form">
 							<h2>Local</h2>
+							<label htmlFor="technology">Technology </label>
 							<input onChange={this.props.handleBackupLTChange} value={this.props.newLocalTechnology} placeholder={this.props.backups.localTechnology} />
+							<label htmlFor="frequency">Frequency</label>
 							<input onChange={this.props.handleBackupLFChange} value={this.props.newLocalFrequency} placeholder={this.props.backups.localFrequency} />
+							<label htmlFor="Location">Location</label>
 							<input onChange={this.props.handleBackupLLChange} value={this.props.newLocalLocation} placeholder={this.props.backups.localDescription} />
+							<label htmlFor="Window">Window</label>
 							<input onChange={this.props.handleBackupLWChange} value={this.props.newLocalWindow} />	
+							<label htmlFor="description">Description</label>
 							<textarea onChange={this.props.handleBackupLDChange} value={this.props.newLocalDescription} placeholder={this.props.backups.localDescription}/>
 						</form>
 					</div>
