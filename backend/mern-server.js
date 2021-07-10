@@ -266,9 +266,9 @@ app.post("/companies/create", (req,res) => {
 
 app.post("/companies/:company/info", (req,res) => {
 	updateCompany(req.body.company, "name", req.body.newName,console.log);
-	updateCompany(req.body.company, "address", req.body.address,console.log);
-	updateCompany(req.body.company, "emailAddr", req.body.emailAddr,console.log);
-	updateCompany(req.body.company, "phone", req.body.phone,console.log);
+	updateCompany(req.body.newName, "address", req.body.address,console.log);
+	updateCompany(req.body.newName, "emailAddr", req.body.emailAddr,console.log);
+	updateCompany(req.body.newName, "phone", req.body.phone,console.log);
 	res.send("Done");
 });
 

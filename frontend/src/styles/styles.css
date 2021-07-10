@@ -243,8 +243,17 @@ p {
 	width:20%;
 	padding:1rem;
 	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
-	background-color: #455062;
+	background-color: #498a61;
 	color:white;
+}
+
+.companyEditFields h5 {
+	text-align: center;
+	width: 20%;
+	color:#19212e;
+	padding: 1rem;
+	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+	margin: 0;
 }
 
 .companyEditFields input {
@@ -277,9 +286,27 @@ p {
 	color:#19212e;
 }
 
+#company-buttons {
+	width:100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
 #company-delete {
 	width:90%;
 	padding:1rem;
+	border:none;
+	margin-top: 1rem;
+}
+
+#companyUpdate {
+	width:90%;
+	padding: 1rem;
+	background-color: #4a5364;
+	color: white;
+	border:none;
+	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
 }
 
 #card-container {
@@ -456,7 +483,7 @@ p {
 }
 
 .backup-card label {
-	font-weight: 600;
+	font-weight: 500;
 	text-align: left;
 	width:90%;
 	font-size: .7rem;
