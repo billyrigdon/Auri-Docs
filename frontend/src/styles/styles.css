@@ -534,3 +534,52 @@ p {
 	align-items:center;
 	justify-content: space-between;
 }
+
+/*Email Page*/
+
+#email-container {
+	width:100%;
+	height:100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+#email-container button {
+	width:50%;
+	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+	padding: 1.5rem;
+	background-color: #4a5364;
+	color: white;
+	border:none;
+	border-radius: none;
+	font-size: 1.2rem;
+}
+
+#email-card {
+	display: flex;
+	flex-direction: column;
+	width:50%;
+	height:70%;
+	align-items: center;
+	position:relative;
+	justify-content: space-around;
+	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+	padding:1rem;
+	margin:1rem 1rem 1rem 1rem;
+	background-color: #ffffff;
+}
+
+#email-card label {
+	color: #19212e;
+	font-size: 1.1rem;
+}
+
+#email-card input {
+	padding:1rem;
+	border:none;
+	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+	width:90%;
+	color:#19212e;
+}
