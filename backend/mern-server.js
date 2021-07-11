@@ -34,7 +34,7 @@ const companySchema = new mongoose.Schema({
 	email: {
 		platform: String,
 		webmail: String,
-		emailServer: String,
+		server: String,
 		domains: String
 	},
 	fileShares: {
@@ -101,7 +101,7 @@ const createCompany = (companyName) => {
 		email: {
 			platform: "",
 			webmail: "",
-			emailServer: "",
+			server: "",
 			domains: ""
 		},
 		fileShares: {
@@ -319,6 +319,11 @@ app.post("/companies/apps/:company/update", (req,res) => {
 
 app.post("/companies/backups/:company/update", (req,res) => {
 	updateCompany(req.body.company, "backups", req.body.backups, console.log);
+	res.send("Done");
+});
+
+app.post("/companies/email/:company", (req,res) => {
+	updateCompany(req.body.company, "email", req.body.email, console.log);
 	res.send("Done");
 });
 

@@ -49,6 +49,16 @@ class App extends React.Component {
 			newLocalFrequency: "",
 			newLocalDescription: "",
 			newLocalLocation: "",
+			email: {
+				platform: "",
+				webmail: "",
+				emailServer: "",
+				domains: ""
+			},
+			newEmailPlatform: "",
+			newEmailWebmail: "",
+			newEmailServer: "",
+			newEmailDomains: ""
 		};
 
 		this.fetchCompany = this.fetchCompany.bind(this);
@@ -81,32 +91,98 @@ class App extends React.Component {
 		this.handleBackupLWChange = this.handleBackupLWChange.bind(this);
 		this.updateBackup = this.updateBackup.bind(this);
 		this.updateCompanyInfo = this.updateCompanyInfo.bind(this);
+		this.updateEmail = this.updateEmail.bind(this);
+		this.handleEmailPlatformChange = this.handleEmailPlatformChange.bind(this);
+		this.handleEmailDomainsChange = this.handleEmailDomainsChange.bind(this);
+		this.handleEmailServerChange = this.handleEmailServerChange.bind(this);
+		this.handleEmailWebmailChange = this.handleEmailWebmailChange.bind(this);
 	};
 
 	fetchCompany() {
-		fetch("http://127.0.0.1:1313/companies/" + this.state.companyName)
-			.then(res => res.json())	
-			.then(res => this.setState({
-				address: res.address,
-				emailAddr: res.emailAddr,
-				phone: res.phone,
-				newAddress: res.address,
-				newEmailAddr: res.emailAddr,
-				newPhone: res.phone,
-				newName: res.name,
-				apps: res.apps,
-				backups: res.backups,
-				newOffsiteTechnology: res.backups.offsiteTechnology,
-				newOffsiteWindow: res.backups.offsiteWindow,
-				newOffsiteFrequency: res.backups.offsiteFrequency,
-				newOffsiteDescription: res.backups.offsiteDescription,
-				newOffsiteLocation: res.backups.offsiteLocation,
-				newLocalTechnology: res.backups.localTechnology,
-				newLocalWindow: res.backups.localWindow,
-				newLocalFrequency: res.backups.localFrequency,
-				newLocalDescription: res.backups.localDescription,
-				newLocalLocation: res.backups.localLocation
-			}))
+		if (this.state.companyName !== "") {
+			fetch("http://127.0.0.1:1313/companies/" + this.state.companyName)
+				.then(res => res.json())	
+				.then(res => this.setState({
+					address: res.address,
+					emailAddr: res.emailAddr,
+					phone: res.phone,
+					newAddress: res.address,
+					newEmailAddr: res.emailAddr,
+					newPhone: res.phone,
+					newName: res.name,
+					apps: res.apps,
+					backups: res.backups,
+					newOffsiteTechnology: res.backups.offsiteTechnology,
+					newOffsiteWindow: res.backups.offsiteWindow,
+					newOffsiteFrequency: res.backups.offsiteFrequency,
+					newOffsiteDescription: res.backups.offsiteDescription,
+					newOffsiteLocation: res.backups.offsiteLocation,
+					newLocalTechnology: res.backups.localTechnology,
+					newLocalWindow: res.backups.localWindow,
+					newLocalFrequency: res.backups.localFrequency,
+					newLocalDescription: res.backups.localDescription,
+					newLocalLocation: res.backups.localLocation,
+					email: {
+						platform: res.email.platform,
+						webmail: res.email.webmail,
+						server: res.email.server,
+						domains: res.email.domains
+					},
+					newEmailWebmail: res.email.webmail,
+					newEmailServer: res.email.server,
+					newEmailPlatform: res.email.platform,
+					newEmailDomains: res.email.domains
+				}))
+		} else {
+			this.setState({
+			newCompany: "",
+			newName: "",
+			address: "",
+			newAddress: "",
+			emailAddr: "",
+			newEmailAddr: "",
+			phone: "",
+			newPhone: "",
+			articles: [],
+			apps: [],
+			selectedApp: {},
+			updatedAppName: "",
+			updatedAppInstaller: "",
+			updatedAppNotes: "",
+			backups: {
+				offsiteTechnology: "",
+				offsiteWindow: "",
+				offsiteFrequency: "",
+				offsiteDescription: "",
+				offsiteLocation: "",
+				localTechnology: "",
+				localWindow: "",
+				localFrequency: "",
+				localDescription: "",
+				localLocation: ""
+			},
+			newOffsiteTechnology: "",
+			newOffsiteWindow: "",
+			newOffsiteFrequency: "",
+			newOffsiteDescription: "",
+			newOffsiteLocation: "",
+			newLocalTechnology: "",
+			newLocalWindow: "",
+			newLocalFrequency: "",
+			newLocalDescription: "",
+			newLocalLocation: "",
+			email: {
+				platform: "",
+				webmail: "",
+				emailServer: "",
+				domains: ""
+			},
+			newEmailPlatform: "",
+			newEmailWebmail: "",
+			newEmailServer: "",
+			newEmailDomains: ""
+			})
+		}
 	};
 
 	fetchAllCompanies() {
@@ -258,7 +334,7 @@ class App extends React.Component {
 			}))
 			.then(setTimeout(()=> {
 				this.fetchCompany();
-			},1200))
+			},500))
 	};
 
 	updateApp(event) {
@@ -279,7 +355,7 @@ class App extends React.Component {
 			}))
 			.then(setTimeout(()=> {
 				this.fetchCompany();
-			},1200))
+			},500))
 			
 	};
 
@@ -350,7 +426,7 @@ class App extends React.Component {
 			}))
 			.then(setTimeout(()=> {
 				this.fetchCompany();
-			},1200))
+			},500))
 	};
 
 	handleBackupOTChange(event) {
@@ -414,6 +490,52 @@ class App extends React.Component {
 		});
 	};
 
+//Functions used by email page
+
+	updateEmail(event) {
+		event.preventDefault();
+		const requestOptions = {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({company: this.state.companyName, email: {
+				webmail: this.state.newEmailWebmail,
+				platform: this.state.newEmailPlatform,
+				domains: this.state.newEmailDomains,
+				server: this.state.newEmailServer
+			}})
+		};
+
+		fetch("http://127.0.0.1:1313/companies/email/" + this.state.companyName, requestOptions)
+			.then(res => res.json())
+			.then(setTimeout(()=> {
+				this.fetchCompany();
+			},500))	
+	};
+
+	handleEmailPlatformChange(event){
+		this.setState({
+			newEmailPlatform: event.target.value
+		});
+	}
+
+	handleEmailWebmailChange(event){
+		this.setState({
+			newEmailWebmail: event.target.value
+		});
+	}
+
+	handleEmailServerChange(event){
+		this.setState({
+			newEmailServer: event.target.value
+		});
+	}
+
+	handleEmailDomainsChange(event){
+		this.setState({
+			newEmailDomains: event.target.value
+		});
+	}
+
 //React Hooks
 	componentDidMount() {
 		this.fetchAllCompanies();	
@@ -424,7 +546,7 @@ class App extends React.Component {
 			setTimeout(()=> {
 				this.fetchCompany();
 				this.fetchAllCompanies();
-			},1200)
+			},500)
 		} 
 	};
 
@@ -472,6 +594,17 @@ class App extends React.Component {
 					</div>
 				</div>
 			)
+		} else if (this.state.nav === "email") {
+			
+			return (
+				<div id="app-container">
+					<Navbar changeNav={this.changeNav} />
+					<Topbar companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} selectCompany={this.selectCompany} companyName={this.state.companyName}/>
+					<div id="content-container">			 		
+						<Email {...this.state} updateEmail={this.updateEmail} handleEmailWebmailChange={this.handleEmailWebmailChange} handleEmailServerChange={this.handleEmailServerChange} handleEmailPlatformChange={this.handleEmailPlatformChange} handleEmailDomainsChange={this.handleEmailDomainsChange} />	
+					</div>
+				</div>
+			)
 		}
 	}
 };
@@ -503,7 +636,7 @@ class Navbar extends React.Component {
 						<h5>Backup</h5>
 					</li>
 					<li className="nav-button">
-						<span className="material-icons">mail</span>
+						<span className="material-icons" onClick={() => this.props.changeNav("email")}>mail</span>
 						<h5>Email</h5>
 					</li>
 					<li className="nav-button">
@@ -621,7 +754,7 @@ class Articles extends React.Component {
 		if (this.state.companyName !== prevState.companyName) {
 			setTimeout(()=> {
 				this.fetchArticle();
-			},1200)
+			},500)
 		} 
 	};
 
@@ -642,8 +775,8 @@ class Articles extends React.Component {
 		return (
 			<div id="article-container">
 				<form onSubmit={(event) => {this.updateArticle(event); this.props.fetchCompany()}}>
-					<input onChange={this.handleTitleChange} value={this.state.newTitle} type="text" />
-					<textarea onChange={this.handleBodyChange} value={this.state.newBody} name="" id="" cols="30" rows="10"></textarea>
+					<input onChange={this.handleTitleChange} value={this.state.newTitle} type="text" placeholder="Article Title"/>
+					<textarea onChange={this.handleBodyChange} value={this.state.newBody} name="" id="" cols="30" rows="10" placeholder="Article Content"></textarea>
 					<button type="submit">Add new article</button>
 				</form>
 				<div id="articles">
@@ -803,6 +936,25 @@ class Backups extends React.Component {
 		)
 	}
 }
+
+class Email extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+		return (
+			<div id="email-container">
+				<input type="text" value={this.props.newEmailPlatform} onChange={this.props.handleEmailPlatformChange} />
+				<input type="text" value={this.props.newEmailWebmail} onChange={this.props.handleEmailWebmailChange}/>
+				<input type="text" value={this.props.newEmailServer} onChange={this.props.handleEmailServerChange}/>
+				<input type="text" value={this.props.newEmailDomains} onChange={this.props.handleEmailDomainsChange}/>
+				<button className="btn" onClick={this.props.updateEmail}></button>
+			</div>
+		)
+	}
+}
+
 
 export default App;
 
