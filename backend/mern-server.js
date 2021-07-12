@@ -327,6 +327,13 @@ app.post("/companies/email/:company", (req,res) => {
 	res.send("Done");
 });
 
+app.post("/companies/shares/:company", (req,res) => {
+	updateCompany(req.body.company, "fileShares", req.body.fileShares, console.log);
+	res.send("Done");
+});
+
+
+
 //tests
 
 //updateRouter("g","192.168.0.0/24", "192.168.0.1", "ipsec", console.log);

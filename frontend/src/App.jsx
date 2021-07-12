@@ -58,7 +58,11 @@ class App extends React.Component {
 			newEmailPlatform: "",
 			newEmailWebmail: "",
 			newEmailServer: "",
-			newEmailDomains: ""
+			newEmailDomains: "",
+			shareServer: "",
+			shareRootPath: "",
+			shareOnPrem: false,
+			shareDriveLetters: ""
 		};
 
 		this.fetchCompany = this.fetchCompany.bind(this);
@@ -96,6 +100,9 @@ class App extends React.Component {
 		this.handleEmailDomainsChange = this.handleEmailDomainsChange.bind(this);
 		this.handleEmailServerChange = this.handleEmailServerChange.bind(this);
 		this.handleEmailWebmailChange = this.handleEmailWebmailChange.bind(this);
+		this.handleShareChange = this.handleShareChange.bind(this);
+		this.updateShares = this.updateShares.bind(this);
+		this.handleCheckChange = this.handleCheckChange.bind(this);
 	};
 
 	fetchCompany() {
@@ -131,7 +138,11 @@ class App extends React.Component {
 					newEmailWebmail: res.email.webmail,
 					newEmailServer: res.email.server,
 					newEmailPlatform: res.email.platform,
-					newEmailDomains: res.email.domains
+					newEmailDomains: res.email.domains,
+					shareServer: res.fileShares.server,
+					shareOnPrem: res.fileShares.onPrem,
+					shareRootPath: res.fileShares.rootPath,
+					shareDriveLetters: res.fileShares.driveLetters
 				}))
 		} else {
 			this.setState({
@@ -180,7 +191,11 @@ class App extends React.Component {
 			newEmailPlatform: "",
 			newEmailWebmail: "",
 			newEmailServer: "",
-			newEmailDomains: ""
+			newEmailDomains: "",
+			shareServer: "",
+			shareRootPath: "",
+			shareOnPrem: false,
+			shareDriveLetters: ""
 			})
 		}
 	};
@@ -536,6 +551,39 @@ class App extends React.Component {
 		});
 	}
 
+//Functions for Shares component
+	updateShares(event) {
+		event.preventDefault();
+		const requestOptions = {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({company: this.state.companyName, fileShares: {
+				server: this.state.shareServer,
+				driveLetters: this.state.shareDriveLetters,
+				onPrem: this.state.shareOnPrem,
+				rootPath: this.state.shareRootPath
+			}})
+	};	
+
+		fetch("http://127.0.0.1:1313/companies/shares/" + this.state.companyName, requestOptions)
+			.then(res => res.json())
+			.then(setTimeout(()=> {
+				this.fetchCompany();
+			},500));
+	};
+
+	handleShareChange(event) {
+		this.setState({
+			[event.target.name]: event.target.value
+		});
+	}
+
+	handleCheckChange(event) {
+		this.setState({
+			shareOnPrem: !this.state.shareOnPrem
+		});
+	}
+
 //React Hooks
 	componentDidMount() {
 		this.fetchAllCompanies();	
@@ -605,6 +653,17 @@ class App extends React.Component {
 					</div>
 				</div>
 			)
+		} else if (this.state.nav === "shares") {
+			
+			return (
+				<div id="app-container">
+					<Navbar changeNav={this.changeNav} />
+					<Topbar companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} selectCompany={this.selectCompany} companyName={this.state.companyName}/>
+					<div id="content-container">			 		
+						<Shares {...this.state} handleCheckChange={this.handleCheckChange} updateShares={this.updateShares} handleShareChange={this.handleShareChange}/>	
+					</div>
+				</div>
+			)
 		}
 	}
 };
@@ -640,7 +699,7 @@ class Navbar extends React.Component {
 						<h5>Email</h5>
 					</li>
 					<li className="nav-button">
-						<span className="material-icons">folder</span>
+						<span className="material-icons" onClick={() => this.props.changeNav("shares")}>folder</span>
 						<h5>File Shares</h5>
 					</li>
 					<li className="nav-button">
@@ -956,6 +1015,30 @@ class Email extends React.Component {
 					<input type="text" value={this.props.newEmailDomains} onChange={this.props.handleEmailDomainsChange}/>
 				</div>
 				<button onClick={this.props.updateEmail}>Save</button>
+			</div>
+		)
+	}
+}
+
+class Shares extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+		return (
+			<div id="email-container">
+				<div id="email-card">
+					<label htmlFor="platform">Platform</label>
+					<input name="shareServer" type="text" value={this.props.shareServer} onChange={this.props.handleShareChange} />
+					<label htmlFor="webmail">Webmail</label>
+					<input name="shareRootPath" type="text" value={this.props.shareRootPath} onChange={this.props.handleShareChange}/>
+					<label htmlFor="server">Server</label>
+					<input type="checkbox" checked={this.props.shareOnPrem} value={this.props.shareOnPrem} onChange={this.props.handleCheckChange}/>
+					<label htmlFor="domains">Domains</label>
+					<input name="shareDriveLetters" type="text" value={this.props.shareDriveLetters} onChange={this.props.handleShareChange}/>
+				</div>
+				<button onClick={this.props.updateShares}>Save</button>
 			</div>
 		)
 	}
