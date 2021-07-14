@@ -332,6 +332,11 @@ app.post("/companies/shares/:company", (req,res) => {
 	res.send("Done");
 });
 
+app.post("/companies/networks/:company", (req, res) => {
+	updateCompany(req.body.company, "networks", req.body,networks, console.log);
+	res.send("Done");
+});
+
 
 
 //tests

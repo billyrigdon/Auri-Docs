@@ -124,6 +124,8 @@ class App extends React.Component {
 		this.handleShareChange = this.handleShareChange.bind(this);
 		this.updateShares = this.updateShares.bind(this);
 		this.handleCheckChange = this.handleCheckChange.bind(this);
+		this.updateNetworks = this.updateNetworks.bind(this);
+		this.handleNetworksChange = this.handleNetworksChange.bind(this);
 	};
 
 	fetchCompany() {
@@ -647,6 +649,60 @@ class App extends React.Component {
 		});
 	}
 
+//Networks page functions
+
+	updateNetworks(event) {
+		event.preventDefault();
+		const requestOptions = {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({
+				company: this.state.companyName,
+				networks: {
+					dns: this.state.dns,
+					ddns: this.state.ddns,
+					subnet: this.state.subnet,
+					public: this.state.public,
+					gateway: this.state.gateway,
+					domainController: this.state.domainController,
+					dhcpServer: this.state.dhcpServer,
+					dhcpScope: this.state.dhcpScope,
+					router: {
+						subnet: this.state.routerSubnet,
+						ipAddr: this.state.routerIpAddr,
+						dhcp: this.state.routerDhcp,
+						portForwards: this.state.routerPortForwards,
+						notes: this.state.routerNotes,
+						vpn: this.state.routerVpn
+					},
+					wireless: {
+						ssid: this.state.wirelessSsid,
+						encryption: this.state.wirelessEncryption,
+						mgmtURL: this.state.wirelessMgmtURL
+					},
+					vpn: {
+						vpnType: this.state.vpnType,
+						pskLocation: this.state.vpnPskLocation,
+						publicIP: this.state.vpnPublicIP,
+						vpnClient: this.state.vpnClient
+					}
+				}
+			})
+	};	
+
+		fetch("http://127.0.0.1:1313/companies/networks/" + this.state.companyName, requestOptions)
+			.then(res => res.json())
+			.then(setTimeout(()=> {
+				this.fetchCompany();
+			},500));
+	};
+
+	handleNetworksChange(event) {
+		this.setState({
+			[event.target.name]: event.target.value
+		});
+	};
+
 //React Hooks
 	componentDidMount() {
 		this.fetchAllCompanies();	
@@ -727,6 +783,17 @@ class App extends React.Component {
 					</div>
 				</div>
 			)
+		} else if (this.state.nav === "networks") {
+			
+			return (
+				<div id="app-container">
+					<Navbar changeNav={this.changeNav} />
+					<Topbar companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} selectCompany={this.selectCompany} companyName={this.state.companyName}/>
+					<div id="content-container">			 		
+						<Networks {...this.state}/>	
+					</div>
+				</div>
+			)
 		}
 	}
 };
@@ -766,7 +833,7 @@ class Navbar extends React.Component {
 						<h5>File Shares</h5>
 					</li>
 					<li className="nav-button">
-						<span className="material-icons">wifi</span>
+						<span className="material-icons" onClick={() => this.props.changeNav("networks")}>wifi</span>
 						<h5>Networks</h5>
 					</li>
 					<li className="nav-button">
@@ -1109,6 +1176,19 @@ class Shares extends React.Component {
 	}
 }
 
+class Networks extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+		return (
+			<div>
+				<h1>{this.props.dns}</h1>
+			</div>
+		)
+	}
+}
 
 export default App;
 
