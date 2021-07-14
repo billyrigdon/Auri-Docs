@@ -790,7 +790,7 @@ class App extends React.Component {
 					<Navbar changeNav={this.changeNav} />
 					<Topbar companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} selectCompany={this.selectCompany} companyName={this.state.companyName}/>
 					<div id="content-container">			 		
-						<Networks {...this.state}/>	
+						<Networks handleNetworksChange={this.handleNetworksChange} updateNetworks={this.updateNetworks} {...this.state}/>	
 					</div>
 				</div>
 			)
@@ -1183,12 +1183,57 @@ class Networks extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<h1>{this.props.dns}</h1>
+			<div id="network-container">
+				<div id="network-overview-card" className="network-card">
+					<label htmlFor="subnet">Subnet</label>
+					<input name="subnet" type="text" value={this.props.subnet} onChange={this.props.handleNetworksChange} />
+					<label htmlFor="public">Public IP</label>
+					<input name="public" type="text" value={this.props.public} onChange={this.props.handleNetworksChange}/>
+					<label htmlFor="gateway">Gateway Address</label>
+					<input name="gateway" type="text" value={this.props.gateway} onChange={this.props.handleNetworksChange}/>
+					<label htmlFor="dns">DNS Server</label>
+					<input name="dns" type="text" value={this.props.dns} onChange={this.props.handleNetworksChange}/>
+					<label htmlFor="ddns">DDNS Address</label>
+					<input name="ddns" type="text" value={this.props.ddns} onChange={this.props.handleNetworksChange}/>
+					<label htmlFor="dhcpServer">DHCP Server</label>
+					<input name="dhcpServer" type="text" value={this.props.dhcpServer} onChange={this.props.handleNetworksChange}/>
+					<label htmlFor="dhcpScope">DHCP Scope</label>
+					<input name="dhcpScope" type="text" value={this.props.dhcpScope} onChange={this.props.handleNetworksChange}/>
+					<label htmlFor="domainController">Domain Controller</label>
+					<input name="domainController" type="text" value={this.props.domainController} onChange={this.props.handleNetworksChange}/>
+				</div>
+				<button onClick={this.props.updateNetworks}>Save</button>
 			</div>
 		)
 	}
 }
+
+/*
+					dns: res.networks.dns,
+					ddns: res.networks.ddns,
+					subnet: res.networks.subnet,
+					public: res.networks.public,
+					gateway: res.networks.gateway,
+					domainController: res.networks.domainController,
+					dhcpServer: res.networks.dhcpServer,
+					dhcpScope: res.networks.dhcpScope,
+					
+					routerSubnet: res.networks.router.subnet,
+					routerIpAddr: res.networks.router.ipAddr,
+					routerDhcp: res.networks.router.dhcp,
+					routerPortForwards: res.networks.router.portForwards,
+					routerNotes: res.networks.router.notes,
+					routerVpn: res.networks.router.vpn,
+					
+					wirelessSsid: res.networks.wireless.ssid,
+					wirelessEncryption: res.networks.wireless.encryption,
+					wirelessMgmtURL: res.networks.wireless.mgmtURL,
+					
+					vpnType: res.networks.vpn.type,
+					vpnPskLocation: res.networks.vpn.pskLocation,
+					vpnPublicIP: res.networks.vpn.publicIP,
+					vpnClient: res.networks.vpn.client
+*/ 
 
 export default App;
 

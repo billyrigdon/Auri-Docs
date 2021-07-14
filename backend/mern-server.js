@@ -333,7 +333,7 @@ app.post("/companies/shares/:company", (req,res) => {
 });
 
 app.post("/companies/networks/:company", (req, res) => {
-	updateCompany(req.body.company, "networks", req.body,networks, console.log);
+	updateCompany(req.body.company, "networks", req.body.networks, console.log);
 	res.send("Done");
 });
 
