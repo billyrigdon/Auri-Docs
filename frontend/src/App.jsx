@@ -62,7 +62,28 @@ class App extends React.Component {
 			shareServer: "",
 			shareRootPath: "",
 			shareOnPrem: false,
-			shareDriveLetters: ""
+			shareDriveLetters: "",
+			dns: "",
+			ddns: "",
+			subnet: "",
+			public: "",
+			gateway: "",
+			domainController: "",
+			dhcpServer: "",
+			dhcpScope: "",
+			routerSubnet: "",
+			routerIpAddr: "",
+			routerDhcp: false,
+			routerPortForwards: "",
+			routerNotes: "",
+			routerVpn: "",
+			wirelessSsid: "",
+			wirelessEncryption: "",
+			wirelessMgmtURL: "",
+			vpnType: "",
+			vpnPskLocation: "",
+			vpnPublicIP: "",
+			vpnClient: ""
 		};
 
 		this.fetchCompany = this.fetchCompany.bind(this);
@@ -142,7 +163,28 @@ class App extends React.Component {
 					shareServer: res.fileShares.server,
 					shareOnPrem: res.fileShares.onPrem,
 					shareRootPath: res.fileShares.rootPath,
-					shareDriveLetters: res.fileShares.driveLetters
+					shareDriveLetters: res.fileShares.driveLetters,
+					dns: res.networks.dns,
+					ddns: res.networks.ddns,
+					subnet: res.networks.subnet,
+					public: res.networks.public,
+					gateway: res.networks.gateway,
+					domainController: res.networks.domainController,
+					dhcpServer: res.networks.dhcpServer,
+					dhcpScope: res.networks.dhcpScope,
+					routerSubnet: res.networks.router.subnet,
+					routerIpAddr: res.networks.router.ipAddr,
+					routerDhcp: res.networks.router.dhcp,
+					routerPortForwards: res.networks.router.portForwards,
+					routerNotes: res.networks.router.notes,
+					routerVpn: res.networks.router.vpn,
+					wirelessSsid: res.networks.wireless.ssid,
+					wirelessEncryption: res.networks.wireless.encryption,
+					wirelessMgmtURL: res.networks.wireless.mgmtURL,
+					vpnType: res.networks.vpn.type,
+					vpnPskLocation: res.networks.vpn.pskLocation,
+					vpnPublicIP: res.networks.vpn.publicIP,
+					vpnClient: res.networks.vpn.client
 				}))
 		} else {
 			this.setState({
@@ -195,7 +237,28 @@ class App extends React.Component {
 			shareServer: "",
 			shareRootPath: "",
 			shareOnPrem: false,
-			shareDriveLetters: ""
+			shareDriveLetters: "",
+			dns: "",
+			ddns: "",
+			subnet: "",
+			public: "",
+			gateway: "",
+			domainController: "",
+			dhcpServer: "",
+			dhcpScope: "",
+			routerSubnet: "",
+			routerIpAddr: "",
+			routerDhcp: false,
+			routerPortForwards: "",
+			routerNotes: "",
+			routerVpn: "",
+			wirelessSsid: "",
+			wirelessEncryption: "",
+			wirelessMgmtURL: "",
+			vpnType: "",
+			vpnPskLocation: "",
+			vpnPublicIP: "",
+			vpnClient: ""
 			})
 		}
 	};
