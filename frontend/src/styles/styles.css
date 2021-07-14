@@ -583,3 +583,67 @@ p {
 	width:90%;
 	color:#19212e;
 }
+
+/*File Shares section*/
+
+#share-container {
+	width:100%;
+	height:100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+#share-container button {
+	width:50%;
+	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+	padding: 1.5rem;
+	background-color: #4a5364;
+	color: white;
+	border:none;
+	border-radius: none;
+	font-size: 1.2rem;
+}
+
+#share-card {
+	display: flex;
+	flex-direction: column;
+	width:50%;
+	height:80%;
+	align-items: center;
+	position:relative;
+	justify-content: space-around;
+	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+	padding:1rem;
+	margin:1rem 1rem 1rem 1rem;
+	background-color: #ffffff;
+}
+
+#share-card label {
+	color: #19212e;
+	font-size: 1.1rem;
+}
+
+#share-card input {
+	padding:1rem;
+	border:none;
+	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+	width:90%;
+	color:#19212e;
+}
+
+#on-prem-switch-container {
+	height:10rem;
+	width: 10rem;
+
+}
+
+#on-prem-switch {
+	display: flex;
+	flex-direction: column;
+	height:2rem;
+	width:10%;
+	align-items: center;
+	justify-content: center;
+}
