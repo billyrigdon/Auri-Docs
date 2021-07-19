@@ -647,3 +647,100 @@ p {
 	align-items: center;
 	justify-content: center;
 }
+
+/*Networks Page*/
+
+#network-container {
+	width: 100%;
+	height: 100%;
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#network-card-container {
+	width:100%;
+	height:90%;
+	display:flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+}
+
+.network-card {
+	display: flex;
+	flex-direction: column;
+	width:45%;
+	height:45%;
+	align-items: center;
+	position:relative;
+	justify-content: space-around;
+	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+	padding:1rem;
+	margin:1rem 1rem 1rem 1rem;
+	background-color: #ffffff;
+}
+
+.network-card input {
+	padding:.3rem;
+	border:none;
+	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+	color:#19212e;
+}
+
+.network-card label {
+	color: #19212e;
+	font-size: 1.1rem;
+	text-align:center;
+}
+
+#network-overview-card {
+	display:flex;
+	flex-direction: column;
+}
+
+#network-fields-container {
+	display:flex;
+	flex-direction:row;
+	width:100%;
+	height:100%;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.network-overview-fields {
+	display:flex;
+	flex-direction:column;
+}
+
+#router-fields-container {
+	display:flex;
+	flex-direction:row;
+	width:100%;
+	height:100%;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.router-fields {
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.router-fields textarea {
+	padding:.3rem;
+	border:none;
+	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+	color:#19212e;
+	height:20vh;
+}
+
+#router-save-button {
+	border: none;
+	padding:1rem;
+	background-color:#4a5364;
+	color:white;
+	width:90%;
+}
