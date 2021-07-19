@@ -229,6 +229,47 @@ const updateApp = (companyName,oldApp,newApp,done) => {
 	});
 };
 
+//Server Functions
+
+const createServer = (companyName, serverObj, done) => {
+	Companies.findOne({name: companyName}, (err,company) => {
+		if (err) return console.log(err);
+		company.servers.push(serverObj);
+		company.save((err, updatedCompany) => {
+			if (err) return console.log(err);
+			done(null, updatedCompany)
+		});
+	});
+};
+
+const deleteServer = (companyName, serverObj, done) => {
+	Companies.findOne({name: companyName}, (err, company) => {
+		if (err) return console.log(err);
+		company.servers.pull(serverObj);
+		company.save((err, updatedCompany) => {
+			if (err) return console.log(err);
+			done(null, updatedCompany)
+		});
+	});
+};
+
+const updateServer = (companyName,oldServer,newServer,done) => {
+	Companies.findOne({name: companyName}, (err, company) => {
+		if (err) return console.log(err);
+		serverIndex = company.servers.findIndex(x => x.hostname === oldServer.hostname);
+		if (serverIndex < 0) {
+			createServer(companyName,newServer,console.log);
+		} else {
+			company.servers.set(serverIndex, newServer);
+			company.save((err,updatedCompany) => {
+				if (err) return console.log(err);
+				done(null,updatedCompany)
+			});
+		}
+	});
+};
+
+
 
 
 //Express config
@@ -337,6 +378,20 @@ app.post("/companies/networks/:company", (req, res) => {
 	res.send("Done");
 });
 
+app.post("/companies/servers/:company/create", (req,res) => {
+	createServer(req.body.company, req.body.newServer, console.log);
+	res.send("Done");
+});
+
+app.post("/companies/servers/:company/delete", (req,res) => {
+	deleteServer(req.body.company, req.body.server, console.log);
+	res.send("Done");
+});
+
+app.post("/companies/servers/:company/update", (req,res) => {
+	updateServer(req.body.company, req.body.server, req.body.updatedServer, console.log);
+	res.send("Done");
+});
 
 
 //tests

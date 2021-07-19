@@ -24,6 +24,7 @@ class App extends React.Component {
 			articles: [],
 			apps: [],
 			selectedApp: {},
+			updatedApp: {},
 			updatedAppName: "",
 			updatedAppInstaller: "",
 			updatedAppNotes: "",
@@ -83,7 +84,14 @@ class App extends React.Component {
 			vpnType: "",
 			vpnPskLocation: "",
 			vpnPublicIP: "",
-			vpnClient: ""
+			vpnClient: "",
+			servers: [],
+			selectedServer: {},
+			updatedServer: {},
+			updatedServerHostname: "",
+			updatedServerRole: "",
+			updatedServerIP: "",
+			updatedServerNotes: ""
 		};
 
 		this.fetchCompany = this.fetchCompany.bind(this);
@@ -127,6 +135,11 @@ class App extends React.Component {
 		this.updateNetworks = this.updateNetworks.bind(this);
 		this.handleNetworksChange = this.handleNetworksChange.bind(this);
 		this.handleRouterDhcpChange = this.handleRouterDhcpChange.bind(this);
+		this.updateServer = this.updateServer.bind(this);
+		this.deleteServer = this.deleteServer.bind(this);
+		this.selectServer = this.selectServer.bind(this);
+		this.handleServerChange = this.handleServerChange.bind(this);
+		this.createNewServer = this.createNewServer.bind(this);
 	};
 
 	fetchCompany() {
@@ -187,7 +200,17 @@ class App extends React.Component {
 					vpnType: res.networks.vpn.type,
 					vpnPskLocation: res.networks.vpn.pskLocation,
 					vpnPublicIP: res.networks.vpn.publicIP,
-					vpnClient: res.networks.vpn.client
+					vpnClient: res.networks.vpn.client,
+					servers: res.servers,
+					updatedServerHostname: "",
+					updatedServerIP: "",
+					updatedServerRole: "",
+					updatedServerNotes: "",
+					selectedApp: "",
+					updatedApp: "",
+					updatedAppName: "",
+					updatedAppInstaller: "",
+					updatedAppNotes: ""
 				}))
 		} else {
 			this.setState({
@@ -261,7 +284,13 @@ class App extends React.Component {
 			vpnType: "",
 			vpnPskLocation: "",
 			vpnPublicIP: "",
-			vpnClient: ""
+			vpnClient: "",
+			servers: [],
+			selectedServer: {},
+			updatedServerHostname: "",
+			updatedServerRole: "",
+			updatedServerIP: "",
+			updatedServerNotes: ""
 			})
 		}
 	};
@@ -710,6 +739,166 @@ class App extends React.Component {
 		});
 	}
 
+//Functions used by App page
+
+	selectApp(appObj) {
+		this.setState({
+			selectedApp: appObj,
+			updatedApp: appObj,
+			updatedAppName: appObj.name,
+			updatedAppInstaller: appObj.installer,
+			updatedAppNotes: appObj.notes
+		});
+	};
+
+	deleteApp(event) {
+		event.preventDefault();
+
+		const requestOptions = {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({company: this.state.companyName, app: this.state.selectedApp})
+		};
+	
+		fetch("http://127.0.0.1:1313/companies/apps/" + this.state.companyName + "/delete", requestOptions)
+			.then(res => res.json())
+			.then(this.setState({
+				selectedApp: "",
+				updatedApp: "",
+				updatedAppName: "",
+				updatedAppInstaller: "",
+				updatedAppNotes: ""
+			}))
+			.then(setTimeout(()=> {
+				this.fetchCompany();
+			},500))
+	};
+
+	updateApp(event) {
+		event.preventDefault();
+		const requestOptions = {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({company: this.state.companyName, app: this.state.selectedApp, updatedApp: {name: this.state.updatedAppName, installer: this.state.updatedAppInstaller, notes: this.state.updatedAppNotes}})
+		};
+	
+		fetch("http://127.0.0.1:1313/companies/apps/" + this.state.companyName + "/update", requestOptions)
+			.then(res => res.json())
+			.then(this.setState({
+				selectedApp: "",
+				updatedAppName: "",
+				updatedAppInstaller: "",
+				updatedAppNotes: ""
+			}))
+			.then(setTimeout(()=> {
+				this.fetchCompany();
+			},500))
+			
+	};
+
+	handleAppNameChange(event) {
+		this.setState({
+			updatedAppName: event.target.value
+		});
+	};
+
+	handleAppInstallerChange(event) {
+		this.setState({
+			updatedAppInstaller: event.target.value
+		});
+	};
+
+	handleAppNotesChange(event) {
+		this.setState({
+			updatedAppNotes: event.target.value
+		});
+	};
+
+	createNewApp(event) {
+		event.preventDefault();
+		this.setState({
+			selectedApp: "",
+			updatedAppName: "",
+			updatedAppInstaller: "",
+			updatedAppNotes: ""
+		});
+	};
+	
+//Functions used by server page
+	selectServer(serverObj) {
+		this.setState({
+			selectedServer: serverObj,
+			updatedServer: serverObj,
+			updatedServerHostname: serverObj.hostname,
+			updatedServerIP: serverObj.ip,
+			updatedServerRole: serverObj.role,
+			updatedServerNotes: serverObj.notes
+		});
+	};
+
+	deleteServer(event) {
+		event.preventDefault();
+
+		const requestOptions = {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({company: this.state.companyName, server: this.state.selectedServer})
+		};
+	
+		fetch("http://127.0.0.1:1313/companies/servers/" + this.state.companyName + "/delete", requestOptions)
+			.then(res => res.json())
+			.then(this.setState({
+				selectedServer: {},
+				updatedServer: {},
+				updatedServerHostname: "",
+				updatedServerIP: "",
+				updatedServerRole: "",
+				updatedServerNotes: ""
+			}))
+			.then(setTimeout(()=> {
+				this.fetchCompany();
+			},500))
+	};
+
+	updateServer(event) {
+		event.preventDefault();
+		const requestOptions = {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({company: this.state.companyName, server: this.state.selectedServer, updatedServer: {hostname: this.state.updatedServerHostname, role: this.state.updatedServerRole, ip: this.state.updatedServerIP, notes: this.state.updatedServerNotes}})
+		};
+	
+		fetch("http://127.0.0.1:1313/companies/servers/" + this.state.companyName + "/update", requestOptions)
+			.then(res => res.json())
+			.then(this.setState({
+				selectedServer: {},
+				updatedServerHostname: "",
+				updatedServerIP: "",
+				updatedServerRole: "",
+				updatedServerNotes: ""
+			}))
+			.then(setTimeout(()=> {
+				this.fetchCompany();
+			},500))
+			
+	};
+
+	handleServerChange(event) {
+		this.setState({
+			[event.target.name]: event.target.value
+		});
+	};
+
+	createNewServer(event) {
+		event.preventDefault();
+		this.setState({
+			selectedServer: {},
+			updatedServerHostname: "",
+			updatedServerIP: "",
+			updatedServerRole: ""
+		});
+	};
+
 
 //React Hooks
 	componentDidMount() {
@@ -802,6 +991,17 @@ class App extends React.Component {
 					</div>
 				</div>
 			)
+		} else if (this.state.nav === "servers") {
+			
+			return (
+				<div id="app-container">
+					<Navbar changeNav={this.changeNav} />
+					<Topbar companyList={this.state.companyList} fetchAllCompanies={this.fetchAllCompanies} selectCompany={this.selectCompany} companyName={this.state.companyName}/>
+					<div id="content-container">			 		
+						<Servers selectServer={this.selectServer} createNewServer={this.createNewServer} deleteServer={this.deleteServer} handleServerChange={this.handleServerChange} updateServer={this.updateServer} {...this.state}/>	
+					</div>
+				</div>
+			)
 		}
 	}
 };
@@ -845,7 +1045,7 @@ class Navbar extends React.Component {
 						<h5>Networks</h5>
 					</li>
 					<li className="nav-button">
-						<span className="material-icons">storage</span>
+						<span className="material-icons" onClick={() => this.props.changeNav("servers")}>storage</span>
 						<h5>Servers</h5>
 					</li>
 				</ul>
@@ -1267,15 +1467,45 @@ class Networks extends React.Component {
 	}
 }
 
-/*
-		
-				
+class Servers extends React.Component {
+	constructor(props) {
+		super(props);
+	};
+
+	render() {
+
+		const server = this.props.servers.map((item,index) => 
+			<div className="app-cards">
+				<h3 className="app-title">
+					<a>
+						{item.hostname}
+					</a>	
+				</h3>
+				<button onClick={() => {this.props.selectServer(item)}}>Select</button>
+			</div>	
+		)
+
+		return (
+			<div id="applications-container">
+				<form id="app-info">
+					<input name="updatedServerHostname" onChange={this.props.handleServerChange} value={this.props.updatedServerHostname} placeholder="Hostname" />
+					<input name="updatedServerIP" onChange={this.props.handleServerChange} value={this.props.updatedServerIP} placeholder="IP Address" />
+					<input name="updatedServerRole" onChange={this.props.handleServerChange} value={this.props.updatedServerRole} placeholder="Server Role"/>
+					<textarea name="updatedServerNotes" onChange={this.props.handleServerChange} value={this.props.updatedServerNotes} placeholder="Server Notes"/>
+					<button id="save-app-button" onClick={this.props.updateServer} className="btn btn-primary">Save</button>
+					<button className="btn btn-danger" onClick={this.props.deleteServer}>Delete</button>
 					
-					vpnType: res.networks.vpn.type,
-					vpnPskLocation: res.networks.vpn.pskLocation,
-					vpnPublicIP: res.networks.vpn.publicIP,
-					vpnClient: res.networks.vpn.client
-*/ 
+				</form>
+				<div id="app-card-container">
+					<div id="appList">
+						{server}
+					</div>
+					<button id="create-app-button" onClick={this.props.createNewServer}>Create New Server</button>
+				</div>
+			</div>
+		)
+	}
+}
 
 export default App;
 
