@@ -103,6 +103,13 @@ p {
 	justify-content: center;
 }
 
+#dropdown-profile {
+	display:flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
 #topbar span {
 	color: #dbd5b9;
 	font-size: 5rem;

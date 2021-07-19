@@ -1071,14 +1071,15 @@ class Topbar extends React.Component {
 					<span className="material-icons">pets</span>
 					<h1>Auri</h1>
 				</div>
-				<input type="text" />
-				<select name="Dropdown" id="Companies" value="" onChange={this.props.selectCompany}>
-					<option value="">{this.props.companyName}</option>
-					{allCompanies}
-				</select>
-				<span class="material-icons">
-					account_circle
-				</span>
+				<div id="dropdown-profile">
+					<select name="Dropdown" id="Companies" value="" onChange={this.props.selectCompany}>
+						<option value="">{this.props.companyName}</option>
+						{allCompanies}
+					</select>
+					<span class="material-icons">
+						account_circle
+					</span>
+				</div>
 			</div>
 		)
 	}
