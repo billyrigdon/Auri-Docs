@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
-const generateToken = require("../utilities/token");
+const {generateToken} = require("../utilities/token");
 
 
 const createUser = asyncHandler(async (req,res) => {
@@ -8,6 +8,8 @@ const createUser = asyncHandler(async (req,res) => {
 	
 	const emailExists = await User.findOne({email});
 	const usernameExists = await User.findOne({username});
+
+	
 
 	if(emailExists) {
 		res.status(400).send("There is an account already associated with this email")
@@ -42,6 +44,8 @@ const loginUser = asyncHandler(async (req,res) => {
 	const {email, password} = req.body;
 	const user = await User.findOne({email});
 
+	console.log(user);
+
 	if (user && (await user.matchPassword(password))) {
 		res.status(201).json({
 			_id: user._id,
@@ -56,5 +60,6 @@ const loginUser = asyncHandler(async (req,res) => {
 		throw new Error("Invalid login credentials");
 	}
 });
+
 
 module.exports = {createUser, loginUser};

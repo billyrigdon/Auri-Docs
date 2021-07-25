@@ -2,6 +2,7 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import $ from 'jquery';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
+import axios from "axios";
 
 
 //Parent Component
@@ -9,6 +10,8 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			userEmail: localStorage.getItem("email"),
+			userToken: localStorage.getItem("token"),
 			nav: "companies",
 			companyList: [],
 			companyName: "",
@@ -141,9 +144,17 @@ class App extends React.Component {
 		this.createNewServer = this.createNewServer.bind(this);
 	};
 
-	fetchCompany() {
+	fetchCompany = async () => {
 		if (this.state.companyName !== "") {
-			fetch("http://127.0.0.1:1313/companies/" + this.state.companyName)
+			
+			const requestOptions = {
+				method: "POST",
+				headers: {"Content-type": "application/json"},
+				body: JSON.stringify({company: this.state.companyName, email: this.state.userEmail, token: this.state.userToken})
+			};
+
+		
+			fetch("/api/companies/" + this.state.companyName, requestOptions)
 				.then(res => res.json())	
 				.then(res => this.setState({
 					address: res.address,
@@ -1075,7 +1086,7 @@ class Topbar extends React.Component {
 						<option value="">{this.props.companyName}</option>
 						{allCompanies}
 					</select>
-					<span class="material-icons">
+					<span className="material-icons">
 						account_circle
 					</span>
 				</div>
@@ -1160,10 +1171,10 @@ class Articles extends React.Component {
 			<div className="article-cards">
 				<h3 className="article-title">
 					<a data-toggle="collapse" data-target={"#article-content-"+ item.title.split(" ").join("-") + index.toString()} aria-expanded="false" aria-controls={"article-content-" + item.title + index.toString()}>
-						{item.title}<span class="material-icons">expand_more</span>
+						{item.title}<span className="material-icons">expand_more</span>
 					</a>
 				</h3>
-				<div class="collapse" id={"article-content-" +item.title.split(" ").join("-") + index.toString()}>
+				<div className="collapse" id={"article-content-" +item.title.split(" ").join("-") + index.toString()}>
 					<p>{item.content}</p>
 				</div>
 			</div>	
@@ -1199,7 +1210,7 @@ class Companies extends React.Component {
 		const allCompanies = this.props.companyList.map((item) =>
 			<div className="companyCard">
 				<h6>{item.name}</h6>
-				<button className="btn" value={item.name} onClick={this.props.selectCompany}>Select</button>				
+				<button key={item.name} className="btn" value={item.name} onClick={this.props.selectCompany}>Select</button>				
 			</div>
 		)
 

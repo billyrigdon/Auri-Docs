@@ -29,7 +29,7 @@ const Login = ({history}) => {
 			setLoading(true);
 			
 			const { data } = await axios.post(
-				'http://127.0.0.1:1313/api/users/login',
+				"/api/users/login",
 				{	
 					email,
 					password
@@ -40,6 +40,8 @@ const Login = ({history}) => {
 			console.log(data);
 			
 			localStorage.setItem("userInfo", JSON.stringify(data));
+			localStorage.setItem("email", JSON.stringify(data.email));
+			localStorage.setItem("token", JSON.stringify(data.token));
 			
 			setError("");
 			setLoading(false);

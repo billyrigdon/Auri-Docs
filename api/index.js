@@ -5,6 +5,7 @@ const helmet = require("helmet");
 require("dotenv").config();
 const userRoute = require("./routes/userRoute");
 const cors = require("cors");
+const companyRoute = require("./routes/companyRoute")
 
 const Companies = require("./models/companyModel");
 
@@ -19,6 +20,7 @@ app.use(cors());
 
 
 app.use("/api/users", userRoute);
+app.use("/api/companies", companyRoute);
 
 app.listen(process.env.PORT, () => {console.log("Server listening on port: " + process.env.PORT)});
 
@@ -96,12 +98,6 @@ const createCompany = (companyName) => {
 	});
 };
 
-const getCompany = (companyName,done) => {
-	Companies.findOne({name: companyName}, (err, companyFound) => {
-		if (err) return console.log(err);
-		done(null,companyFound);
-	});
-};
 
 const getAllCompanies = (done) => {
 	Companies.find({}, (err, allCompany) => {
@@ -219,7 +215,7 @@ const updateServer = (companyName,oldServer,newServer,done) => {
 	});
 };
 
-
+/*
 //GET Requests
 app.get("/companies/:company", (req,res) => {
 	getCompany(req.params.company,(err,data)=> {
@@ -227,6 +223,7 @@ app.get("/companies/:company", (req,res) => {
 		res.json(data);
 	});
 });
+*/
 
 app.get("/companies", (req,res) => {
 	getAllCompanies((err,data) => {
