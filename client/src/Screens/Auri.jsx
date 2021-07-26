@@ -6,7 +6,7 @@ import axios from "axios";
 
 
 //Parent Component
-class App extends React.Component {
+class Auri extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -1525,5 +1525,5 @@ class Servers extends React.Component {
 	}
 }
 
-export default App;
+export default Auri;
 

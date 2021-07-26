@@ -751,3 +751,38 @@ p {
 	color:white;
 	width:90%;
 }
+
+/*Login Page Styling*/
+#login-container {
+	height: 100vh;
+	width: 100vw;
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #bed4e750;
+}
+
+#login-card {
+	display: flex;
+	flex-direction: column;
+	width:30%;
+	height:auto;
+	min-height: 40%;
+	align-items: center;
+	position:relative;
+	justify-content: space-around;
+	box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+	padding:1rem;
+	margin:1rem 1rem 1rem 1rem;
+	background-color: #ffffff;
+}
+
+.mb-3 {
+	text-align:center;
+}
+
+.login-form {
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+}
