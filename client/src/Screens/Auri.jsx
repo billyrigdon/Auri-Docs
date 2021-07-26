@@ -306,7 +306,14 @@ class App extends React.Component {
 	};
 
 	fetchAllCompanies() {
-		fetch("http://127.0.0.1:1313/companies/")
+
+		const requestOptions = {
+			method: "POST",
+			headers: {"Content-type": "application/json"},
+			body: JSON.stringify({email: this.state.userEmail, token: this.state.userToken})
+		};
+
+		fetch("http://127.0.0.1:1313/companies/", requestOptions)
 			.then(res => res.json())
 			.then(res => this.setState({
 				companyList: res

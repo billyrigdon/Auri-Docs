@@ -99,12 +99,12 @@ const createCompany = (companyName) => {
 };
 
 
-const getAllCompanies = (done) => {
-	Companies.find({}, (err, allCompany) => {
-		if (err) return console.log(err);
-		done(null,allCompany);
-	});
-};
+//const getAllCompanies = (done) => {
+//	Companies.find({}, (err, allCompany) => {
+//		if (err) return console.log(err);
+//		done(null,allCompany);
+//	});
+//};
 
 const updateCompany = (companyName,objToUpdate,newValue, done) => {
 	Companies.findOne({name: companyName}, (err, company) => {
@@ -225,11 +225,11 @@ app.get("/companies/:company", (req,res) => {
 });
 */
 
-app.get("/companies", (req,res) => {
-	getAllCompanies((err,data) => {
-		res.json(data);
-	})
-});
+//app.get("/companies", (req,res) => {
+//	getAllCompanies((err,data) => {
+//		res.json(data);
+//	})
+//});
 
 //POST Requests
 app.post("/companies/create", (req,res) => {
