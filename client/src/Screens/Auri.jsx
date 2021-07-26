@@ -313,7 +313,7 @@ class App extends React.Component {
 			body: JSON.stringify({email: this.state.userEmail, token: this.state.userToken})
 		};
 
-		fetch("http://127.0.0.1:1313/companies/", requestOptions)
+		fetch("http://127.0.0.1:1313/api/companies/", requestOptions)
 			.then(res => res.json())
 			.then(res => this.setState({
 				companyList: res
