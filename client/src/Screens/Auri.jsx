@@ -4,6 +4,14 @@ import $ from 'jquery';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import axios from "axios";
 
+/********************************************************************************
+ATTENTION: This is trash. I was just learning react for the first time when
+I wrote this and didn't separate this into multiple files like I should have.
+This project isn't even worth looking at. Seriously. If you're going to browse 
+my code, I recommend checking out one of my newer projects like Shulgin or 
+RigdonOS. I'm sure I'll be embarassed of them too, but at least it's better than 
+this.
+**********************************************************************************/
 
 //Parent Component
 class Auri extends React.Component {
