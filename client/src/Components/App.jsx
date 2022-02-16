@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Redirect } from "react-router";
 import { useState, useEffect } from "react";
 import Login from "../Screens/Login";
-import Main from "./Main";
 import {PrivateRoute} from "./PrivateRoute";
 import Auri from "../Screens/Auri"
 
@@ -17,8 +16,7 @@ const App = () => {
 	
 	useEffect(()=> {
 		setUserInfo(localStorage.getItem("userInfo"));
-		console.log(userInfo)
-	});
+	},[]);
 	
 	return (
 		<Router>
