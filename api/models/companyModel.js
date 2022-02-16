@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
 const companySchema = new mongoose.Schema({
-	name: {type: String, required: true},
-	address: {type: String, default:""},
+	name: { type: String, required: true },
+	address: { type: String, default: "" },
 	emailAddr: String,
 	phone: String,
 	articles: [],
@@ -17,19 +17,19 @@ const companySchema = new mongoose.Schema({
 		localWindow: String,
 		localFrequency: String,
 		localDescription: String,
-		localLocation: String
+		localLocation: String,
 	},
 	email: {
 		platform: String,
 		webmail: String,
 		server: String,
-		domains: String
+		domains: String,
 	},
 	fileShares: {
 		server: String,
 		rootPath: String,
 		onPrem: Boolean,
-		driveLetters: String
+		driveLetters: String,
 	},
 	networks: {
 		dns: String,
@@ -41,26 +41,26 @@ const companySchema = new mongoose.Schema({
 		dhcpServer: String,
 		dhcpScope: String,
 		router: {
-			subnet:String, 
-			ipAddr:String,
+			subnet: String,
+			ipAddr: String,
 			dhcp: Boolean,
 			portForwards: String,
-			notes: String, 
-			vpn: String
+			notes: String,
+			vpn: String,
 		},
 		wireless: {
 			ssid: String,
 			encryption: String,
-			mgmtURL: String
+			mgmtURL: String,
 		},
 		vpn: {
 			vpnType: String,
 			pskLocation: String,
 			publicIP: String,
-			vpnClient: String
-		}
+			vpnClient: String,
+		},
 	},
-	servers: []
+	servers: [],
 });
 
 const Companies = mongoose.model("Companies", companySchema);

@@ -1,6 +1,13 @@
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
-import {auth} from "../auth"
+
+const auth = () => {
+	if (localStorage.getItem("userInfo")) {
+		return true;
+	} else {
+		return false;
+	}
+};
 
 export const PrivateRoute = ({component: Component, ...rest}) => {
 	return (
