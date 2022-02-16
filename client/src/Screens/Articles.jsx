@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button, Collapse } from "react-bootstrap";
+import { Collapse } from "react-bootstrap";
+import "../styles/styles.css";
 
 class Articles extends React.Component {
 	constructor(props) {
@@ -163,14 +164,16 @@ class Article extends Component {
 	render() {
 		return (
 			<div>
-				<a
-					role="button"
-					onClick={this.toggleFunc}
-					aria-controls={this.props.title}
-					aria-expanded={this.state.open}
-				>
-					{this.props.title}
-				</a>
+				<h3 className="article-title">
+					<a
+						role="button"
+						onClick={this.toggleFunc}
+						aria-controls={this.props.title}
+						aria-expanded={this.state.open}
+					>
+						{this.props.title}
+					</a>
+				</h3>
 				<Collapse in={this.state.open} id={this.props.title}>
 					<p>{this.props.content}</p>
 				</Collapse>
